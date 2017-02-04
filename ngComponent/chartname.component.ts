@@ -19,7 +19,7 @@ interface IChart {
 })
 
 
-export class #ChartNameComponent {
+export class ChartNameComponent {
   chart: any;
 
   constructor(private elementRef: ElementRef) {
