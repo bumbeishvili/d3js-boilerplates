@@ -1,7 +1,7 @@
 
 
 
-function getChart() {
+function getChart(params) {
     // exposed variables
     var attrs = {
         svgWidth: 400,
@@ -18,7 +18,7 @@ function getChart() {
 
     var attrKeys = Object.keys(attrs);
     attrKeys.forEach(function (key) {
-        if (params[key]) {
+        if (params && params[key]) {
             attrs[key] = params[key];
         }
     })
