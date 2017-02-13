@@ -83,14 +83,14 @@ function getChart() {
     }
 
     chart.width = function (value) {
-        if (!arguments.length) return attrs.width;
-        attrs.width = value;
+        if (!arguments.length) return attrs.svgWidth;
+        attrs.svgWidth = value;
         return chart;
     }
 
     chart.height = function (value) {
-        if (!arguments.length) return attrs.height;
-        attrs.height = value;
+        if (!arguments.length) return attrs.svgHeight;
+        attrs.svgHeight = value;
         return chart;
     }
 
