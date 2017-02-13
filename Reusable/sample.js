@@ -4,14 +4,12 @@
 function getChart() {
     // exposed variables
     var attrs = {
-        svgWidth: null,
-        svgHeight: null,
-        chartWidth: null,
-        chartHeight: null,
-        marginTop,
-        marginBottom,
-        marginRight,
-        marginLeft,
+        svgWidth: 400,
+        svgHeight: 400,
+        marginTop: 5,
+        marginBottom: 5,
+        marginRight: 5,
+        marginLeft: 5,
         data: null
     };
 
@@ -46,10 +44,10 @@ function getChart() {
             //drawing
             var svg = d3.select(this)
                 .append('svg')
-                .attr('width',attrs.svgWidth)
-                .attr('height',attrs.svgHeight)
-                // .attr("viewBox", "0 0 " + attrs.svgWidth + " " + attrs.svgHeight)
-                // .attr("preserveAspectRatio", "xMidYMid meet")
+                .attr('width', attrs.svgWidth)
+                .attr('height', attrs.svgHeight)
+            // .attr("viewBox", "0 0 " + attrs.svgWidth + " " + attrs.svgHeight)
+            // .attr("preserveAspectRatio", "xMidYMid meet")
 
 
             var chart = svg.append('g')
