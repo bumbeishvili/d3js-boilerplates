@@ -14,6 +14,16 @@ function renderChart(params) {
         marginBottom:0,
         marginRight:0
     }
+    
+    
+    /*############### IF EXISTS OVERWRITE ATTRIBUTES FROM PASSED PARAM  #######  */
+
+    var attrKeys = Object.keys(attrs);
+    attrKeys.forEach(function (key) {
+        if (params[key]) {
+            attrs[key] = params[key];
+        }
+    })
 
 
     /* ############## DINAMICALLY CALCULATED PROPERTIES ########### */
