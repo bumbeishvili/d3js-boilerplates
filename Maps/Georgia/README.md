@@ -1,2 +1,22 @@
-# d3js-boilerplate
-D3 js templates for fast initial setup
+# Map of Georgia
+
+## D3.JS based visualization's boilerplate 
+
+### Applied [Reusable charts principle](https://bost.ocks.org/mike/chart/) 
+
+#### Has support of  [update handler functions](https://www.toptal.com/d3-js/towards-reusable-d3-js-charts)
+
+##### [Preview](https://bumbeishvili.github.io/d3js-boilerplates/Maps/Georgia/index.html)
+
+Sample Invokation
+```javascript
+
+ var chart = getChart()
+            .width(600)
+            .height(600)
+
+ d3.select("#myGraph")
+           .call(chart);
+            
+
+```
