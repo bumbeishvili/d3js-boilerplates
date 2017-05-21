@@ -14,6 +14,7 @@ function getChart(params) {
         marginLeft: 5,
         center: [43.5, 44],
         scale: 5000,
+        geojson:null,
         data: null
     };
 
@@ -76,17 +77,15 @@ function getChart(params) {
             /* ##############  DRAWING ################# */
 
 
-
-            d3.json('geo_regions.json', function (json) {
                 chart.selectAll('path')
-                    .data(json.features)
+                    .data(attrs.geojson.features)
                     .enter()
                     .append('path')
                     .attr('d', path)
                     .attr('fill', d => '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6)) //random color
 
 
-            })
+            
 
 
 
@@ -104,7 +103,7 @@ function getChart(params) {
 
 
 
-        ;['width', 'height'].forEach(key => {
+        ;['geojson','width', 'height'].forEach(key => {
             // Attach variables to main function
             return main[key] = function (_) {
                 var string = `attrs['${key}'] = _`;
