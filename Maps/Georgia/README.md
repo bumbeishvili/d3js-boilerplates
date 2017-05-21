@@ -2,7 +2,7 @@
 
 ## D3.JS based visualization's boilerplate 
 
-### Applied [Reusable charts principle](https://bost.ocks.org/mike/chart/) 
+### Applied [reusable charts principle](https://bost.ocks.org/mike/chart/) 
 
 #### Has support of  [update handler functions](https://www.toptal.com/d3-js/towards-reusable-d3-js-charts)
 
