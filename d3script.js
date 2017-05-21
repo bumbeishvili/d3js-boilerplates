@@ -4,7 +4,7 @@
 function renderChart(params) {
 
 
-    var attrs = {
+    var config = {
         data: params.data,
         selector: params.selector,
         svgWidth: 400,
@@ -18,11 +18,11 @@ function renderChart(params) {
 
     /* ############## DINAMICALLY CALCULATED PROPERTIES ########### */
     var calc = {};
-    calc.chartLeftMargin = attrs.marginLeft;
-    calc.chartTopMargin = attrs.marginTop;
+    calc.chartLeftMargin = config.marginLeft;
+    calc.chartTopMargin = config.marginTop;
 
-    calc.chartWidth = attrs.svgWidth - attrs.marginRight - calc.chartLeftMargin;
-    calc.chartHeight = attrs.svgHeight - attrs.marginBottom - calc.chartTopMargin;
+    calc.chartWidth = config.svgWidth - config.marginRight - calc.chartLeftMargin;
+    calc.chartHeight = config.svgHeight - config.marginBottom - calc.chartTopMargin;
 
 
 
@@ -41,9 +41,9 @@ function renderChart(params) {
     /* ##############  DRAWING ################# */
 
     /* ----- RESPONSIVE SVG DRAWING  ------- */
-    var svg = d3.select(attrs.selector)
+    var svg = d3.select(config.selector)
         .append('svg')
-        .attr("viewBox", "0 0 " + attrs.svgWidth + " " + attrs.svgHeight)
+        .attr("viewBox", "0 0 " + config.svgWidth + " " + config.svgHeight)
         .attr("preserveAspectRatio", "xMidYMid meet")
     
     /* ----- CHART CONTENT DRAWING   --------- */
