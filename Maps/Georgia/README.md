@@ -25,3 +25,17 @@ Sample Invokation
 Screenshot
 
 ![](https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/d3-boilerplates/mapofGeorgia.png)
+
+
+
+<table>
+ <tr>
+   <th>Visualizations</th>
+ </tr>
+ 
+   <tr>
+      <td>
+         <a href="https://bumbeishvili.github.io/geo-vis/populationPerRegions/">Population's density</a>
+      </td>
+   </tr>
+</table>
