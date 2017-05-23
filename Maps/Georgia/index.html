@@ -21,12 +21,17 @@
     <script src="d3script.js"></script>
 
     <script>
-        var chart = getChart()
-            .width(600)
-            .height(600)
+        d3.json('geo_regions.json', function (json) {
+            var chart = getChart()
+                .svgHeight(window.innerHeight-30)
+                .svgWidth(window.innerWidth-30)
+                .geojson(json)
+                .data('Pass Something Here and use it as attrs.data')
 
-        d3.select("#myGraph")
-            .call(chart);
+            d3.select("#myGraph")
+                .call(chart);
+
+        })
     </script>
 
 
