@@ -23,8 +23,8 @@
     <script>
         d3.json('geo_regions.json', function (json) {
             var chart = getChart()
-                .width(600)
-                .height(600)
+                .svgHeight(window.innerHeight-30)
+                .svgWidth(window.innerWidth-30)
                 .geojson(json)
                 .data('Pass Something Here and use it as attrs.data')
 

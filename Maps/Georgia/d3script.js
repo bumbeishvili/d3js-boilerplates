@@ -14,7 +14,7 @@ function getChart(params) {
         marginLeft: 5,
         center: [43.5, 44],
         scale: 5000,
-        geojson:null,
+        geojson: null,
         data: null
     };
 
@@ -46,11 +46,29 @@ function getChart(params) {
             calc.chartWidth = attrs.svgWidth - attrs.marginRight - calc.chartLeftMargin;
             calc.chartHeight = attrs.svgHeight - attrs.marginBottom - calc.chartTopMargin;
 
+
+            /*##################################   HANDLERS  ####################################### */
+            var handlers = {
+                zoomed: null
+            }
+
+
+
+            /*##################################   BEHAVIORS ####################################### */
+            var behaviors = {};
+
+            behaviors.zoom = d3.zoom().on("zoom", d =>  handlers.zoomed(d));
+
+
+
+
+
             //drawing
             var svg = d3.select(this)
                 .append('svg')
                 .attr('width', attrs.svgWidth)
                 .attr('height', attrs.svgHeight)
+                .call(behaviors.zoom);
             // .attr("viewBox", "0 0 " + attrs.svgWidth + " " + attrs.svgHeight)
             // .attr("preserveAspectRatio", "xMidYMid meet")
 
@@ -77,15 +95,21 @@ function getChart(params) {
             /* ##############  DRAWING ################# */
 
 
-                chart.selectAll('path')
-                    .data(attrs.geojson.features)
-                    .enter()
-                    .append('path')
-                    .attr('d', path)
-                    .attr('fill', d => '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6)) //random color
+            chart.selectAll('path')
+                .data(attrs.geojson.features)
+                .enter()
+                .append('path')
+                .attr('d', path)
+                .attr('fill', d => '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6)) //random color
 
 
-            
+
+            /* #############################   HANDLER FUNCTIONS    ############################## */
+            handlers.zoomed = function () {
+                var transform = d3.event.transform;
+                chart.attr('transform', transform);
+            }
+
 
 
 
@@ -103,7 +127,7 @@ function getChart(params) {
 
 
 
-        ;['geojson','width', 'height'].forEach(key => {
+        ;['geojson', 'svgWidth', 'svgHeight'].forEach(key => {
             // Attach variables to main function
             return main[key] = function (_) {
                 var string = `attrs['${key}'] = _`;
