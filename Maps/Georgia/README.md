@@ -49,7 +49,7 @@ if you want subregions map, just change geojson file name
 
 ```
 
-Screenshot
+
 
 **regions**  
 ![](https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/d3-boilerplates/mapofGeorgia.png)
