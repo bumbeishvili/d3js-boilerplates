@@ -2,25 +2,52 @@
 
 ## D3.JS based visualization's boilerplate 
 
-### Applied [reusable charts principle](https://bost.ocks.org/mike/chart/) 
+**Highlights**
+1. Applied [reusable charts principle](https://bost.ocks.org/mike/chart/) 
+1. Support of  [update handler functions](https://www.toptal.com/d3-js/towards-reusable-d3-js-charts)
+1. Support of Zooming & Dragging 
 
-#### Has support of  [update handler functions](https://www.toptal.com/d3-js/towards-reusable-d3-js-charts)
+
+
 
 ##### [Preview](https://bumbeishvili.github.io/d3js-boilerplates/Maps/Georgia/index.html)
 
 Sample Invokation
 ```javascript
 
- var chart = getChart()
-            .width(600)
-            .height(600)
+ d3.json('geo_regions.json', function (json) {
+ 
+            var chart = getChart()
+                .svgHeight(window.innerHeight-30)  // make visual full screen
+                .svgWidth(window.innerWidth-30) // make visual full screen
+                .geojson(json)
+                .data('Pass Something Here and use it as attrs.data')
 
- d3.select("#myGraph")
-           .call(chart);
-            
+            d3.select("#myGraph")
+                .call(chart);
+
+  })
 
 ```
 
+
+if you want subregions map, just change geojson file name
+```javascript
+
+ d3.json('geo_sub_regions.json', function (json) {
+ 
+            var chart = getChart()
+                .svgHeight(window.innerHeight-30)  // make visual full screen
+                .svgWidth(window.innerWidth-30) // make visual full screen
+                .geojson(json)
+                .data('Pass Something Here and use it as attrs.data')
+
+            d3.select("#myGraph")
+                .call(chart);
+
+  })
+
+```
 
 Screenshot
 
