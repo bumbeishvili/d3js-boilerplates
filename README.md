@@ -19,3 +19,4 @@ color(0.25) // something between red and yellow -  orange - rgb(250, 120, 0)
 color(0.75) // something between yellow and green -  rgb(122, 184, 0)
 
 ```
+[Pen](https://codepen.io/bumbeishvili/pen/bReoMP?editors=1010)
