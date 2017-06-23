@@ -12,14 +12,14 @@ D3 js templates for fast initial setup
 #### Metronic Dark Color Palette
 [Pen](https://codepen.io/bumbeishvili/pen/xrrzzQ?editors=1010)
 ```
- var METRONIC_DARK_COLORS =  [ "#2f353b", "#3598dc", "#578ebe", "#2C3E50", "#22313F", "#67809F", 
- "#4B77BE", "#4c87b9", "#5e738b", "#5C9BD1", "#94A0B2", "#32c5d2", "#1BBC9B",
- "#1BA39C", "#36D7B7", "#44b6ae", "#26C281", "#3faba4", "#4DB3A2", "#2ab4c0", 
- "#29b4b6", "#555555", "#95A5A6", "#BFBFBF", "#ACB5C3", "#bfcad1", "#525e64", 
- "#e7505a", "#E08283", "#E26A6A", "#e35b5a", "#D91E18", "#EF4836", "#d05454", 
- "#f36a5a", "#e43a45", "#c49f47", "#E87E04", "#f2784b", "#f3c200", "#F7CA18", 
- "#F4D03F", "#c8d046", "#c5bf66", "#c5b96b", "#8E44AD", "#8775a7", "#BF55EC", 
- "#8E44AD", "#9B59B6", "#9A12B3", "#8775a7", "#796799", "#8877a9"]
+ var METRONIC_DARK_COLORS  = ["#c5bf66","#BF55EC","#f36a5a","#EF4836","#9A12B3","#c8d046","#E26A6A",
+ "#32c5d2","#8877a9","#ACB5C3","#e35b5a","#2f353b","#e43a45","#f2784b",
+ "#796799","#26C281","#555555","#525e64","#8E44AD","#4c87b9","#bfcad1",
+ "#67809F","#578ebe","#c5b96b","#4DB3A2","#e7505a","#D91E18","#1BBC9B",
+ "#3faba4","#d05454","#8775a7","#8775a7","#8E44AD","#f3c200","#4B77BE",
+ "#c49f47","#44b6ae","#36D7B7","#94A0B2","#9B59B6","#E08283","#3598dc",
+ "#F4D03F","#F7CA18","#22313F","#2ab4c0","#5e738b","#BFBFBF","#2C3E50",
+ "#5C9BD1","#95A5A6","#E87E04","#29b4b6","#1BA39C"]
 ```
  
 #### Multiple color interpolation  
