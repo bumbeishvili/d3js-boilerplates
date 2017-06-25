@@ -10,7 +10,7 @@
 
 
 
-##### [Preview](https://bumbeishvili.github.io/d3js-boilerplate/Maps/World/)
+##### [Preview](https://bumbeishvili.github.io/d3js-boilerplates/Maps/World/index.html)
 
 Sample Invokation
 ```javascript
