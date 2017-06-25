@@ -1,4 +1,4 @@
-# Map of Georgia
+# Map of the World
 
 ## D3.JS based visualization's boilerplate 
 
