@@ -1,12 +1,13 @@
 ## sample invokation
 
 ```javascript
-var chart = getChart(config)
-                .width(400)
-                .height(400)
-                
-  d3.select(selector)
-    .call(chart);
+          var chart = renderChart()
+                .svgHeight(window.innerHeight-30)
+                .svgWidth(window.innerWidth-30)
+                .data('Pass Something Here and use it as attrs.data')
+
+            d3.select("#myGraph")
+                .call(chart);
     
     
     

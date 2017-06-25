@@ -1,7 +1,7 @@
 
 
 
-function getChart(params) {
+function renderChart(params) {
     // exposed variables
     var attrs = {
         svgWidth: 400,
@@ -29,7 +29,7 @@ function getChart(params) {
 
 
     //main chart object
-    var chart = function (selection) {
+    var main = function (selection) {
         selection.each(function () {
 
             //calculated properties
@@ -67,31 +67,35 @@ function getChart(params) {
 
 
         });
-    }
+    };
 
 
-    //exposed variable funcs
-    chart.data = function (value) {
+
+
+
+    ['svgWidth', 'svgHeight'].forEach(key => {
+        // Attach variables to main function
+        return main[key] = function (_) {
+            var string = `attrs['${key}'] = _`;
+            if (!arguments.length) { eval(`return attrs['${key}']`); }
+            eval(string);
+            return main;
+        };
+    });
+
+
+
+
+    //exposed update functions
+    main.data = function (value) {
         if (!arguments.length) return attrs.data;
         attrs.data = value;
         if (typeof updateData === 'function') {
             updateData();
         }
-        return chart;
-    }
-
-    chart.width = function (value) {
-        if (!arguments.length) return attrs.svgWidth;
-        attrs.svgWidth = value;
-        return chart;
-    }
-
-    chart.height = function (value) {
-        if (!arguments.length) return attrs.svgHeight;
-        attrs.svgHeight = value;
-        return chart;
+        return main;
     }
 
 
-    return chart;
+    return main;
 }
