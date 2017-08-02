@@ -70,4 +70,14 @@ if you want subregions map, just change geojson file name
          <a href="https://bumbeishvili.github.io/geo-vis/populationPerRegions/">Population's density</a>
       </td>
    </tr>
+   <tr>
+      <td>
+         <a href="https://bumbeishvili.github.io/geo-vis/populationPerRegions/">Georgian Villages</a>
+      </td>
+   </tr>
+   <tr>
+      <td>
+         <a href="https://bumbeishvili.github.io/geo-vis/populationPerRegions/">Village Populations</a>
+      </td>
+   </tr>
 </table>
