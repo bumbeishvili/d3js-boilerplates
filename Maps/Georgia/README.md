@@ -72,12 +72,12 @@ if you want subregions map, just change geojson file name
    </tr>
    <tr>
       <td>
-         <a href="https://bumbeishvili.github.io/geo-vis/populationPerRegions/">Georgian Villages</a>
+         <a href="https://bumbeishvili.github.io/geo-vis/populatedAreas/index.html">Georgian Villages</a>
       </td>
    </tr>
    <tr>
       <td>
-         <a href="https://bumbeishvili.github.io/geo-vis/populationPerRegions/">Village Populations</a>
+         <a href="https://bumbeishvili.github.io/geo-vis/populatedAreas/bar.html">Village Populations</a>
       </td>
    </tr>
 </table>
