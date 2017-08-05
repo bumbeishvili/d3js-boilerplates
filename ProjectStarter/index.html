@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+
+</head>
+
+<body translate="no">
+
+    <div class="container centered" >
+        <div id="myGraph"></div>
+    </div>
+    <script src="libs/d3.v4.min.js"></script>
+     <script src="scripts/d3script.js"></script>
+
+    <script>
+
+
+          var chart = renderChart()
+                .svgHeight(window.innerHeight-30)
+                .svgWidth(window.innerWidth-30)
+                .data('Pass Something Here and use it as attrs.data')
+
+            d3.select("#myGraph")
+                .call(chart);
+
+        
+    </script>
+
+
+</body>
+
+</html>
