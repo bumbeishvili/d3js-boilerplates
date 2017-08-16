@@ -1,7 +1,7 @@
 
 
-
 function renderChart(params) {
+
   // exposed variables
   var attrs = {
     svgWidth: 400,
@@ -10,6 +10,7 @@ function renderChart(params) {
     marginBottom: 5,
     marginRight: 5,
     marginLeft: 5,
+    container: 'body',
     data: null
   };
 
@@ -22,12 +23,12 @@ function renderChart(params) {
     }
   })
 
-  //innerFunctions
+  //innerFunctions which will update visuals
   var updateData;
 
   //main chart object
   var main = function (selection) {
-    selection.each(function () {
+    selection.each(function scope() {
 
       //calculated properties
       var calc = {}
@@ -36,26 +37,25 @@ function renderChart(params) {
       calc.chartWidth = attrs.svgWidth - attrs.marginRight - calc.chartLeftMargin;
       calc.chartHeight = attrs.svgHeight - attrs.marginBottom - calc.chartTopMargin;
 
-      //drawing
+      //drawing containers
       var container = d3.select(this);
 
+      //add svg
       var svg = patternify({ container: container, selector: 'svg-chart-container', elementTag: 'svg' })
       svg.attr('width', attrs.svgWidth)
         .attr('height', attrs.svgHeight)
       // .attr("viewBox", "0 0 " + attrs.svgWidth + " " + attrs.svgHeight)
       // .attr("preserveAspectRatio", "xMidYMid meet")
 
-
+      //add container g element
       var chart = patternify({ container: svg, selector: 'chart', elementTag: 'g' })
       chart.attr('transform', 'translate(' + (calc.chartLeftMargin) + ',' + calc.chartTopMargin + ')');
-
 
       // smoothly handle data updating
       updateData = function () {
 
 
       }
-
       //#########################################  UTIL FUNCS ##################################
 
       //enter exit update pattern principle
@@ -71,19 +71,48 @@ function renderChart(params) {
         selection.attr('class', selector);
         return selection;
       }
+
+      function debug() {
+        if (attrs.isDebug) {
+          var stringified = scope + "";
+
+          var groupVariables = stringified.match(/var\s+([\w])+\s*=\s*{\s*}/gi)
+            .map(d => d.match(/\s+\w*/gi).filter(s => s.trim()))
+            .map(v => v[0].trim())
+
+          groupVariables.forEach(v => {
+            main['P_' + v] = eval(v)
+          })
+        }
+      }
+
+      debug();
     });
   };
 
-
-  ['svgWidth', 'svgHeight'].forEach(key => {
+  //dinamic functions
+  Object.keys(attrs).forEach(key => {
     // Attach variables to main function
     return main[key] = function (_) {
       var string = `attrs['${key}'] = _`;
-      if (!arguments.length) { eval(`return attrs['${key}']`); }
+      if (!arguments.length) { return eval(` attrs['${key}'];`); }
       eval(string);
       return main;
     };
   });
+
+  //set attrs as property
+  main.attrs = attrs;
+
+  //debugging visuals
+  main.debug = function (isDebug) {
+    attrs.isDebug = isDebug;
+    if (isDebug) {
+      if (!window.charts) window.charts = [];
+      window.charts.push(main);
+    }
+    return main;
+  }
 
   //exposed update functions
   main.data = function (value) {
@@ -95,6 +124,11 @@ function renderChart(params) {
     return main;
   }
 
+  // run  visual
+  main.run = function () {
+    d3.selectAll(attrs.container).call(main);
+    return main;
+  }
 
   return main;
 }
