@@ -74,12 +74,19 @@ function renderChart(params) {
 
       function debug() {
         if (attrs.isDebug) {
+          //stringify func
           var stringified = scope + "";
 
-          var groupVariables = stringified.match(/var\s+([\w])+\s*=\s*{\s*}/gi)
+          // parse variable names
+          var groupVariables = stringified
+            //match var xxx= {};
+            .match(/var\s+([\w])+\s*=\s*{\s*}/gi)
+            //match xxx
             .map(d => d.match(/\s+\w*/gi).filter(s => s.trim()))
+            //get xxx
             .map(v => v[0].trim())
 
+          //assign local variables to the scope
           groupVariables.forEach(v => {
             main['P_' + v] = eval(v)
           })
