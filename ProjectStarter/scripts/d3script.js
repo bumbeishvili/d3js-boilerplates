@@ -79,7 +79,7 @@ function renderChart(params) {
 
           // parse variable names
           var groupVariables = stringified
-            //match var xxx= {};
+            //match var x-xx= {};
             .match(/var\s+([\w])+\s*=\s*{\s*}/gi)
             //match xxx
             .map(d => d.match(/\s+\w*/gi).filter(s => s.trim()))
