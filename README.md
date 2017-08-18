@@ -1,6 +1,16 @@
 # d3js-boilerplate
 D3 js templates for fast initial setup
 
+Content
++ [Colors](#colors)
+   - [Metronic Color Palette](#metronic-dark-color-palette)
+   - [Multiple Color Interpolation](#multiple-color-interpolation)
++ [Positioning](#positioning)
+   - [Adjusting legend positions horizontally](#adjusting-legend-positions-horizontally)
+   - [getting translation values from string](#getting-translation-values-from-string)
++ [Components](#components)
+  - [Svg Tooltip Invoking](#svg-tooltip-invoking)
++ [Data Manipultaions]()
 
 
 **Reusable Snippets**
@@ -403,4 +413,458 @@ ${0}, ${0}
 }
 
 ```
+
+
+
+# Data Manipulations
+Javascript helper prototype functions
+
+
+
+## array
+<table>
+    <tr>
+       <td><a href="#groupby">groupBy</a></td>
+       <td><code>arr.groupBy(['MessageGroupId','FlowId'])</code></td>
+     </tr>
+     <tr>
+       <td><a href="#orderby">orderBy</a></td>
+       <td><code>arr.orderBy(d=>d.FlowId)</code></td>
+     </tr>
+     <tr>
+       <td><a href="#orderbydescending">orderByDescending</a></td>
+       <td><code>arr.orderByDescending(d=>d.FlowId)</code></td>
+     </tr>
+</table>
+
+
+## string
+
+
+
+
+
+
+
+
+
+## groupBy 
+#### usage  
+`arr.groupBy(['MessageGroupId','FlowId'])`
+
+#### Input
+```javascript
+[
+  {
+    "Id": 46489,
+    "Message": "Hi",
+    "MessageGroupId": 46488,
+    "FlowId": 99
+  },
+  {
+    "Id": 46492,
+    "Message": "Hi User",
+    "MessageGroupId": 46490,
+    "FlowId": 100
+  },
+  {
+    "Id": 46494,
+    "Message": "Loan",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  },
+  {
+    "Id": 46496,
+    "Message": "Call",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  }
+]
+```
+
+
+#### Output
+```javascript
+[
+  {
+    "MessageGroupId": 46488,
+    "FlowId": 99,
+    "values": [
+      {
+        "Id": 46489,
+        "Message": "Hi",
+        "MessageGroupId": 46488,
+        "FlowId": 99
+      }
+    ]
+  },
+  {
+    "MessageGroupId": 46490,
+    "FlowId": 100,
+    "values": [
+      {
+        "Id": 46492,
+        "Message": "Hi User",
+        "MessageGroupId": 46490,
+        "FlowId": 100
+      }
+    ]
+  },
+  {
+    "MessageGroupId": 46490,
+    "FlowId": 101,
+    "values": [
+      {
+        "Id": 46494,
+        "Message": "Loan",
+        "FlowId": 101,
+        "MessageGroupId": 46490
+      },
+      {
+        "Id": 46496,
+        "Message": "Call",
+        "FlowId": 101,
+        "MessageGroupId": 46490
+      }
+    ]
+  }
+]
+```
+
+#### Source
+```javascript
+Array.prototype.groupBy = function (props) {
+   var arr = this;
+   var partialResult = {};
+   
+   arr.forEach(el=>{
+   
+       var grpObj = {};
+       
+       props.forEach(prop=>{
+             grpObj[prop] = el[prop]
+       });
+       
+       var key = JSON.stringify(grpObj);
+       
+       if(!partialResult[key]) partialResult[key] = [];
+       
+       partialResult[key].push(el);
+       
+   });
+   
+   var finalResult = Object.keys(partialResult).map(key=>{
+      var keyObj = JSON.parse(key);
+      keyObj.values = partialResult[key];
+      return keyObj;
+   })
+   
+   return finalResult;
+}
+```
+
+
+
+
+## orderBy
+
+#### usage  
+```
+  arr.orderBy(d=>d.FlowId);
+  arr.orderBy(d=>d.Message);
+  arr.orderBy(d=>d.Message.length);
+```
+
+#### Input
+```javascript
+[
+  {
+    "Id": 46489,
+    "Message": "Hi",
+    "MessageGroupId": 46488,
+    "FlowId": 99
+  },
+  {
+    "Id": 46492,
+    "Message": "Hi User",
+    "MessageGroupId": 46490,
+    "FlowId": 100
+  },
+  {
+    "Id": 46494,
+    "Message": "Loan",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  },
+  {
+    "Id": 46496,
+    "Message": "Call",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  }
+]
+```
+
+
+#### Output
+```javascript
+  arr.orderBy(d=>d.FlowId);
+  
+  [
+  {
+    "Id": 46489,
+    "Message": "Hi",
+    "MessageGroupId": 46488,
+    "FlowId": 99
+  },
+  {
+    "Id": 46492,
+    "Message": "Hi User",
+    "MessageGroupId": 46490,
+    "FlowId": 100
+  },
+  {
+    "Id": 46494,
+    "Message": "Loan",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  },
+  {
+    "Id": 46496,
+    "Message": "Call",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  }
+]
+  
+  arr.orderBy(d=>d.Message);
+  
+  [
+  {
+    "Id": 46496,
+    "Message": "Call",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  },
+  {
+    "Id": 46489,
+    "Message": "Hi",
+    "MessageGroupId": 46488,
+    "FlowId": 99
+  },
+  {
+    "Id": 46492,
+    "Message": "Hi User",
+    "MessageGroupId": 46490,
+    "FlowId": 100
+  },
+  {
+    "Id": 46494,
+    "Message": "Loan",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  }
+]
+
+
+  arr.orderBy(d=>d.Message.length);
+  [
+  {
+    "Id": 46489,
+    "Message": "Hi",
+    "MessageGroupId": 46488,
+    "FlowId": 99
+  },
+  {
+    "Id": 46496,
+    "Message": "Call",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  },
+  {
+    "Id": 46494,
+    "Message": "Loan",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  },
+  {
+    "Id": 46492,
+    "Message": "Hi User",
+    "MessageGroupId": 46490,
+    "FlowId": 100
+  }
+]
+  
+  
+```
+
+#### Source
+```javascript
+Array.prototype.orderBy = function (func) {
+    this.sort((a, b) => {
+       
+        var a = func(a);
+        var b = func(b);
+      
+        if (typeof a === 'string' || a instanceof String) {
+            return a.localeCompare(b);
+        }
+        return a - b;
+    });
+    return this;
+}
+
+
+```
+
+
+
+## orderByDescending
+
+#### usage  
+```
+  arr.orderByDescending(d=>d.FlowId);
+  arr.orderByDescending(d=>d.Message);
+  arr.orderByDescending(d=>d.Message.length);
+```
+
+#### Input
+```javascript
+[
+  {
+    "Id": 46489,
+    "Message": "Hi",
+    "MessageGroupId": 46488,
+    "FlowId": 99
+  },
+  {
+    "Id": 46492,
+    "Message": "Hi User",
+    "MessageGroupId": 46490,
+    "FlowId": 100
+  },
+  {
+    "Id": 46494,
+    "Message": "Loan",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  },
+  {
+    "Id": 46496,
+    "Message": "Call",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  }
+]
+```
+
+
+#### Output
+```javascript
+
+  arr.orderByDescending(d=>d.FlowId);  
+  
+  [
+  {
+    "Id": 46496,
+    "Message": "Call",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  },
+  {
+    "Id": 46494,
+    "Message": "Loan",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  },
+  {
+    "Id": 46492,
+    "Message": "Hi User",
+    "MessageGroupId": 46490,
+    "FlowId": 100
+  },
+  {
+    "Id": 46489,
+    "Message": "Hi",
+    "MessageGroupId": 46488,
+    "FlowId": 99
+  }
+]
+  
+  arr.orderByDescending(d=>d.Message);  
+  
+  [
+  {
+    "Id": 46494,
+    "Message": "Loan",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  },
+  {
+    "Id": 46492,
+    "Message": "Hi User",
+    "MessageGroupId": 46490,
+    "FlowId": 100
+  },
+  {
+    "Id": 46489,
+    "Message": "Hi",
+    "MessageGroupId": 46488,
+    "FlowId": 99
+  },
+  {
+    "Id": 46496,
+    "Message": "Call",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  }
+]
+
+  arr.orderByDescending(d=>d.Message.length);
+  
+  [
+  {
+    "Id": 46492,
+    "Message": "Hi User",
+    "MessageGroupId": 46490,
+    "FlowId": 100
+  },
+  {
+    "Id": 46494,
+    "Message": "Loan",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  },
+  {
+    "Id": 46496,
+    "Message": "Call",
+    "MessageGroupId": 46490,
+    "FlowId": 101
+  },
+  {
+    "Id": 46489,
+    "Message": "Hi",
+    "MessageGroupId": 46488,
+    "FlowId": 99
+  }
+]
+```
+
+#### Source
+```javascript
+
+
+Array.prototype.orderByDescending = function (func) {
+    this.sort((a, b) => {
+        var a = func(a);
+        var b = func(b);
+        if (typeof a === 'string' || a instanceof String) {
+            return b.localeCompare(a);
+        }
+        return b - a;
+    });
+    return this;
+}
+```
+
 
