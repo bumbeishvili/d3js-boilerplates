@@ -10,7 +10,11 @@ Content
    - [getting translation values from string](#getting-translation-values-from-string)
 + [Components](#components)
   - [Svg Tooltip Invoking](#svg-tooltip-invoking)
-+ [Data Manipultaions]()
++ [Data Manipultaions](#data-manipulations)
+  - [Array](#svg-tooltip-invoking)
+      - [groupBy](#groupby)  
+      - [orderBy](#orderBy)  
+      - [orderByDescending](#orderByDescending)  
 
 
 **Reusable Snippets**
