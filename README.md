@@ -14,7 +14,7 @@ Content
   - [Array](#array)
       - [groupBy](#groupby)  
       - [orderBy](#orderby)  
-      - [orderByDescending](#orderbyDescending)  
+      - [orderByDescending](#orderbydescending)  
 
 
 **Reusable Snippets**
