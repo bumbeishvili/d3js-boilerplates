@@ -11,10 +11,10 @@ Content
 + [Components](#components)
   - [Svg Tooltip Invoking](#svg-tooltip-invoking)
 + [Data Manipultaions](#data-manipulations)
-  - [Array](#svg-tooltip-invoking)
+  - [Array](#array)
       - [groupBy](#groupby)  
-      - [orderBy](#orderBy)  
-      - [orderByDescending](#orderByDescending)  
+      - [orderBy](#orderby)  
+      - [orderByDescending](#orderbyDescending)  
 
 
 **Reusable Snippets**
@@ -205,7 +205,7 @@ function displayTooltip(params) {
 
   var rows = g
     .selectAll(".rows")
-    .data(tooltipProps.rows)
+    .ma(tooltipProps.rows)
     .enter()
     .append("g")
     .attr("font-size", tooltipProps.fontSize)
