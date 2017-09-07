@@ -16,7 +16,7 @@ Content
       - [orderBy](#orderby)  
       - [orderByDescending](#orderbydescending)    
 + [String Manipulations](#string-manipulations) 
-  - [limit string size](limit-string-size)  
+  - [limit string size](#limit-string-size)  
 
 
 **Reusable Snippets**
