@@ -456,6 +456,38 @@ Javascript helper prototype functions
 #### usage  
 `arr.groupBy(['MessageGroupId','FlowId'])`
 
+#### Source
+```javascript
+Array.prototype.groupBy = function (props) {
+   var arr = this;
+   var partialResult = {};
+   
+   arr.forEach(el=>{
+   
+       var grpObj = {};
+       
+       props.forEach(prop=>{
+             grpObj[prop] = el[prop]
+       });
+       
+       var key = JSON.stringify(grpObj);
+       
+       if(!partialResult[key]) partialResult[key] = [];
+       
+       partialResult[key].push(el);
+       
+   });
+   
+   var finalResult = Object.keys(partialResult).map(key=>{
+      var keyObj = JSON.parse(key);
+      keyObj.values = partialResult[key];
+      return keyObj;
+   })
+   
+   return finalResult;
+}
+```
+
 #### Input
 ```javascript
 [
@@ -535,37 +567,7 @@ Javascript helper prototype functions
 ]
 ```
 
-#### Source
-```javascript
-Array.prototype.groupBy = function (props) {
-   var arr = this;
-   var partialResult = {};
-   
-   arr.forEach(el=>{
-   
-       var grpObj = {};
-       
-       props.forEach(prop=>{
-             grpObj[prop] = el[prop]
-       });
-       
-       var key = JSON.stringify(grpObj);
-       
-       if(!partialResult[key]) partialResult[key] = [];
-       
-       partialResult[key].push(el);
-       
-   });
-   
-   var finalResult = Object.keys(partialResult).map(key=>{
-      var keyObj = JSON.parse(key);
-      keyObj.values = partialResult[key];
-      return keyObj;
-   })
-   
-   return finalResult;
-}
-```
+
 
 
 
@@ -577,6 +579,26 @@ Array.prototype.groupBy = function (props) {
   arr.orderBy(d=>d.FlowId);
   arr.orderBy(d=>d.Message);
   arr.orderBy(d=>d.Message.length);
+```
+
+
+#### Source
+```javascript
+Array.prototype.orderBy = function (func) {
+    this.sort((a, b) => {
+       
+        var a = func(a);
+        var b = func(b);
+      
+        if (typeof a === 'string' || a instanceof String) {
+            return a.localeCompare(b);
+        }
+        return a - b;
+    });
+    return this;
+}
+
+
 ```
 
 #### Input
@@ -702,24 +724,6 @@ Array.prototype.groupBy = function (props) {
   
 ```
 
-#### Source
-```javascript
-Array.prototype.orderBy = function (func) {
-    this.sort((a, b) => {
-       
-        var a = func(a);
-        var b = func(b);
-      
-        if (typeof a === 'string' || a instanceof String) {
-            return a.localeCompare(b);
-        }
-        return a - b;
-    });
-    return this;
-}
-
-
-```
 
 
 
@@ -730,6 +734,24 @@ Array.prototype.orderBy = function (func) {
   arr.orderByDescending(d=>d.FlowId);
   arr.orderByDescending(d=>d.Message);
   arr.orderByDescending(d=>d.Message.length);
+```
+
+
+#### Source
+```javascript
+
+
+Array.prototype.orderByDescending = function (func) {
+    this.sort((a, b) => {
+        var a = func(a);
+        var b = func(b);
+        if (typeof a === 'string' || a instanceof String) {
+            return b.localeCompare(a);
+        }
+        return b - a;
+    });
+    return this;
+}
 ```
 
 #### Input
@@ -854,21 +876,5 @@ Array.prototype.orderBy = function (func) {
 ]
 ```
 
-#### Source
-```javascript
-
-
-Array.prototype.orderByDescending = function (func) {
-    this.sort((a, b) => {
-        var a = func(a);
-        var b = func(b);
-        if (typeof a === 'string' || a instanceof String) {
-            return b.localeCompare(a);
-        }
-        return b - a;
-    });
-    return this;
-}
-```
 
 
