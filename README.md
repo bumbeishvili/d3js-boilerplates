@@ -14,7 +14,9 @@ Content
   - [Array](#array)
       - [groupBy](#groupby)  
       - [orderBy](#orderby)  
-      - [orderByDescending](#orderbydescending)  
+      - [orderByDescending](#orderbydescending)    
++ [String Manipulations](#string-manipulations) 
+  - [limit string size](limit-string-size)  
 
 
 **Reusable Snippets**
@@ -877,4 +879,62 @@ Array.prototype.orderByDescending = function (func) {
 ```
 
 
+# String Manipualtions
+### limit string size 
+```javascript
+   function limit(string,number){
+      var points = '';
+      var diff = 0;
+      if(number <  string.length){
+         points='...';
+         diff=3;
+      }
+      string = string.slice(0,number-diff);
+      return string + points;
+   }
+   // testing
+   for(var i=3;i<20;i++){
+      console.log(i);
+      console.log(limit('testTestTest',i))
+   }
+```
+
+### results
+```
+3
+...
+4
+t...
+5
+te...
+6
+tes...
+7
+test...
+8
+testT...
+9
+testTe...
+10
+testTes...
+11
+testTest...
+12
+testTestTest
+13
+testTestTest
+14
+testTestTest
+15
+testTestTest
+16
+testTestTest
+17
+testTestTest
+18
+testTestTest
+19
+testTestTest
+
+```
 
