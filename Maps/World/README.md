@@ -46,7 +46,7 @@ Sample Invokation
  
    <tr>
       <td>
-         <a href="https://bumbeishvili.github.io/D3-Daniel-PPH/geo-map-chart/"> Geo Map a</a>
+         <a href="https://bumbeishvili.github.io/D3-Daniel-PPH/geo-map-chart/"> Geo Map </a>
       </td>
    </tr>
 </table>
