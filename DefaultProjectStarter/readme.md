@@ -1,5 +1,7 @@
-## sample invokation
 
+View full boilerplate explanations in  [d3-coding-conventions repository](https://github.com/bumbeishvili/d3-coding-conventions#boilerplate-explanations)
+
+## sample invokation
 ```javascript
      var chart = renderChart()
                 .svgHeight(window.innerHeight-30)
