@@ -63,14 +63,16 @@ function renderChart(params) {
         var container = params.container;
         var selector = params.selector;
         var elementTag = params.elementTag;
+        var data = params.data || [selector];
 
         // pattern in action
-        var selection = container.selectAll('.' + selector).data([selector])
+        var selection = container.selectAll('.' + selector).data(data)
         selection.exit().remove();
         selection = selection.enter().append(elementTag).merge(selection)
         selection.attr('class', selector);
         return selection;
       }
+
 
       function debug() {
         if (attrs.isDebug) {
