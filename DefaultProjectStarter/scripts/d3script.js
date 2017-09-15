@@ -1,4 +1,10 @@
+/*  
 
+This code is based on following convention:
+
+https://github.com/bumbeishvili/d3-coding-conventions
+
+*/
 
 function renderChart(params) {
 
