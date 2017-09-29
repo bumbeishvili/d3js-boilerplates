@@ -47,38 +47,21 @@ function renderChart(params) {
       var container = d3.select(this);
 
       //add svg
-      var svg = patternify({ container: container, selector: 'svg-chart-container', elementTag: 'svg' })
-      svg.attr('width', attrs.svgWidth)
+      var svg = container.patternify({ tag: 'svg', selector: 'svg-chart-container' })
+        .attr('width', attrs.svgWidth)
         .attr('height', attrs.svgHeight)
       // .attr("viewBox", "0 0 " + attrs.svgWidth + " " + attrs.svgHeight)
       // .attr("preserveAspectRatio", "xMidYMid meet")
 
       //add container g element
-      var chart = patternify({ container: svg, selector: 'chart', elementTag: 'g' })
-      chart.attr('transform', 'translate(' + (calc.chartLeftMargin) + ',' + calc.chartTopMargin + ')');
+      var chart = svg.patternify({ tag: 'g', selector: 'chart' })
+        .attr('transform', 'translate(' + (calc.chartLeftMargin) + ',' + calc.chartTopMargin + ')');
 
       // smoothly handle data updating
       updateData = function () {
 
-
       }
       //#########################################  UTIL FUNCS ##################################
-
-      //enter exit update pattern principle
-      function patternify(params) {
-        var container = params.container;
-        var selector = params.selector;
-        var elementTag = params.elementTag;
-        var data = params.data || [selector];
-
-        // pattern in action
-        var selection = container.selectAll('.' + selector).data(data)
-        selection.exit().remove();
-        selection = selection.enter().append(elementTag).merge(selection)
-        selection.attr('class', selector);
-        return selection;
-      }
-
 
       function debug() {
         if (attrs.isDebug) {
@@ -100,12 +83,26 @@ function renderChart(params) {
           })
         }
       }
-
       debug();
     });
   };
 
-  //dinamic functions
+  //----------- PROTOTYEPE FUNCTIONS  ----------------------
+  d3.selection.prototype.patternify = function (params) {
+    var container = this;
+    var selector = params.selector;
+    var elementTag = params.tag;
+    var data = params.data || [selector];
+
+    // pattern in action
+    var selection = container.selectAll('.' + selector).data(data)
+    selection.exit().remove();
+    selection = selection.enter().append(elementTag).merge(selection)
+    selection.attr('class', selector);
+    return selection;
+  }
+
+  //dinamic keys functions
   Object.keys(attrs).forEach(key => {
     // Attach variables to main function
     return main[key] = function (_) {

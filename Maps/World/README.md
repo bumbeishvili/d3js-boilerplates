@@ -18,13 +18,13 @@ Sample Invokation
  d3.json('world_countries.json', function (json) {
  
             var chart = getChart()
-                .svgHeight(window.innerHeight-30)  // make visual full screen
-                .svgWidth(window.innerWidth-30) // make visual full screen
+                .svgHeight(window.innerHeight - 30)
+                .svgWidth(window.innerWidth - 30)
                 .geojson(json)
                 .data('Pass Something Here and use it as attrs.data')
-
-            d3.select("#myGraph")
-                .call(chart);
+                .debug(true)
+                .container('#myGraph')
+                .run()
 
   })
 
