@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title> </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body translate="no">
+  <div class="container centered">
+    <h1>Without Boilertplate</h1>
+    <div id="myGraph"></div>
+    <h1>With Boilertplate</h1>
+    <div id="myGraphBoiler"></div>
+  </div>
+  <script src="../DefaultProjectStarter/libs/d3.v4.min.js"></script>
+  <script src="line.js"></script>
+  <script src="lineBoiler.js"></script>
+  <script>
+
+    // without boireplate
+    d3.json("data.json", data => {
+      lineChart('#myGraph', data)
+    })
+
+    //with boilerplate
+    d3.json("data.json", data => {
+
+      renderLineChart()
+        .container('#myGraphBoiler')
+        .data(data)
+        .debug(true)
+        .run()
+
+    })
+  </script>
+
+</body>
+
+</html>
