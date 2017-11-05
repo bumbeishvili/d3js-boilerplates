@@ -6,19 +6,30 @@ https://github.com/bumbeishvili/d3-coding-conventions
 
 */
 
-function renderChart(params) {
+d3.breadcrumb = function (params) {
 
   // exposed variables
   var attrs = {
-    svgWidth: 400,
-    svgHeight: 400,
-    marginTop: 5,
-    marginBottom: 5,
-    marginRight: 5,
-    marginLeft: 5,
     container: 'body',
+    padding: 5,
+    width: 130,
+    height: 28,
+    top: 10,
+    fontSize: 14,
+    marginLeft: 0,
+    marginTop: 10,
+    wrapWidth: null,
     data: null
   };
+
+  var defaultColors = ["#c5bf66", "#BF55EC", "#f36a5a", "#EF4836", "#9A12B3", "#c8d046", "#E26A6A",
+    "#32c5d2", "#8877a9", "#ACB5C3", "#e35b5a", "#2f353b", "#e43a45", "#f2784b",
+    "#796799", "#26C281", "#555555", "#525e64", "#8E44AD", "#4c87b9", "#bfcad1",
+    "#67809F", "#578ebe", "#c5b96b", "#4DB3A2", "#e7505a", "#D91E18", "#1BBC9B",
+    "#3faba4", "#d05454", "#8775a7", "#8775a7", "#8E44AD", "#f3c200", "#4B77BE",
+    "#c49f47", "#44b6ae", "#36D7B7", "#94A0B2", "#9B59B6", "#E08283", "#3598dc",
+    "#F4D03F", "#F7CA18", "#22313F", "#2ab4c0", "#5e738b", "#BFBFBF", "#2C3E50",
+    "#5C9BD1", "#95A5A6", "#E87E04", "#29b4b6", "#1BA39C"]
 
   /*############### IF EXISTS OVERWRITE ATTRIBUTES FROM PASSED PARAM  #######  */
 
@@ -31,36 +42,98 @@ function renderChart(params) {
 
   //innerFunctions which will update visuals
   var updateData;
+  var showBreadcrumbs;
+  var hideBreadcrumbs;
 
   //main chart object
   var main = function (selection) {
     selection.each(function scope() {
+      console.log('runned')
+      var breadcrumbTrail;
+      // #################################   BREADCRUMB SHOW   ##############################
+      function breadcrumbShow(array, d) {
 
-      //calculated properties
-      var calc = {}
-      calc.chartLeftMargin = attrs.marginLeft;
-      calc.chartTopMargin = attrs.marginTop;
-      calc.chartWidth = attrs.svgWidth - attrs.marginRight - calc.chartLeftMargin;
-      calc.chartHeight = attrs.svgHeight - attrs.marginBottom - calc.chartTopMargin;
 
-      //drawing containers
-      var container = d3.select(this);
+        var sequenceArray = attrs.data;
 
-      //add svg
-      var svg = container.patternify({ tag: 'svg', selector: 'svg-chart-container' })
-        .attr('width', attrs.svgWidth)
-        .attr('height', attrs.svgHeight)
-      // .attr("viewBox", "0 0 " + attrs.svgWidth + " " + attrs.svgHeight)
-      // .attr("preserveAspectRatio", "xMidYMid meet")
+        var g = breadcrumbTrail.selectAll('g')
+          .data(sequenceArray, d => d.id)
 
-      //add container g element
-      var chart = svg.patternify({ tag: 'g', selector: 'chart' })
-        .attr('transform', 'translate(' + (calc.chartLeftMargin) + ',' + calc.chartTopMargin + ')');
+        g.exit().remove();
+        var entering = g.enter().append('svg:g')
+        entering.append("svg:polygon")
+          .style('fill', (d, i) => {
+            if (d.fill) return d.fill;
+            return defaultColors[i % defaultColors.length];
+          })
+
+        entering.append('svg:text').attr("x", 20).attr("y", attrs.height / 2).attr("dy", "0.4em").attr("text-anchor", "start").attr('fill', 'white')
+          // .attr('font-size', _var.fontSizes.sequenceFontSize)
+          .attr('font-weight', 100)
+          .attr('font-size', d => {
+            return d.fontSize ? d.fontSize : attrs.fontSize;
+          })
+          .text(function (d) { return d.text; });
+
+        var all = entering.merge(g)
+          .attr('class', 'breadcrumbs')
+          .attr('transform', function (d, i) {
+            return 'translate(0,0)'
+          });
+
+        var startX = attrs.marginLeft;
+        all.each(function (d, i, arr) {
+          var wrapper = d3.select(this);
+          var text = wrapper.select('text');
+          var bbox = text.node().getBBox();
+          var yDiv = Math.floor(startX / attrs.wrapWidth);
+          wrapper.attr('transform', 'translate(' + (startX - yDiv * attrs.wrapWidth) + ',' + yDiv * (attrs.height + attrs.marginTop) + ')');
+          wrapper.select('polygon').attr('points', breadcrumbPoints(d, i, arr, bbox.width + 35));
+          startX += bbox.width + 35 + attrs.padding;
+        })
+
+        //   all.select('polygon').attr('points', breadcrumbPoints)
+        g.exit().remove();
+        breadcrumbTrail.selectAll('.breadcrumbs').attr('visibility', '')
+      }
+
+      function breadcrumbPoints(d, i, arr, width) {
+        var points = [];
+        if (width) {
+          attrs.width = width;
+        }
+        points.push("0,0");
+        points.push(attrs.width + ",0");
+        if (i < (arr.length - 1)) {
+          points.push(attrs.width + attrs.top + "," + (attrs.height / 2));
+        }
+        points.push(attrs.width + "," + attrs.height);
+        points.push("0," + attrs.height);
+        if (i > 0) {
+          points.push(attrs.top + "," + (attrs.height / 2));
+        }
+        return points.join(" ");
+      }
+
 
       // smoothly handle data updating
       updateData = function () {
+        // we don't using that yet
+      };
 
+      showBreadcrumbs = function () {
+        if (!(attrs.container instanceof d3.selection)) {
+          attrs.container = d3.select(attrs.container);
+        }
+        breadcrumbTrail = attrs.container.patternify({ tag: 'g', selector: "breadcrumb-trail" });
+        breadcrumbShow(breadcrumbTrail);
       }
+
+      hideBreadcrumbs = function () {
+        attrs.data = [];
+        breadcrumbTrail.selectAll('g').remove();
+      }
+
       //#########################################  UTIL FUNCS ##################################
 
       function debug() {
@@ -142,5 +215,16 @@ function renderChart(params) {
     return main;
   }
 
-  return main;
+  main.show = function (data) {
+    attrs.data = data;
+    attrs.data.forEach(d => d.id = d.text);
+    showBreadcrumbs();
+  }
+
+  main.hide = function () {
+    hideBreadcrumbs();
+  }
+
+  return main.run();
+
 }

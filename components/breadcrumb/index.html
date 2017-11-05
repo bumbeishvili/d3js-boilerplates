@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Geomapping </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body translate="no">
+
+  <div class="container centered">
+    <div id="myGraph"></div>
+  </div>
+  <script src="d3.v4.min.js"></script>
+  <script src="breadcrumb.js"></script>
+
+  <script>
+
+    var svg = d3.select('body').append('svg').style('overflow', 'visible');
+
+    //initialize
+    var breadcrumb = d3.breadcrumb()
+      .container('svg')
+      .padding(5)
+      .wrapWidth(1200)
+
+    var topY = 230;
+
+    svg.append('text').text('Hover over rects to see things in action').attr('y', 200).attr('x', 100)
+    svg.selectAll('rect')
+      .data(d3.range(100).map(d => d - 1))
+      .enter()
+      .append('rect')
+      .attr('fill', 'aqua')
+      .attr('width', 20)
+      .attr('height', 20)
+      .attr('y', (d, i) => {
+        return topY + 21 * Math.floor(i / 25);
+      })
+      .attr('x', (d, i) => {
+        return 100 + (i % 25) * 21;
+      })
+      .on('mouseenter', function (d, i) {
+        svg.selectAll('rect')
+          .filter(d => d < i)
+          .attr('fill', 'orange')
+        var items = d3.range(i + 1).map(d => { return { text: d} });
+        breadcrumb.show(items);
+      })
+      .on('mouseleave', function (d) {
+        svg.selectAll('rect').attr('fill', 'aqua')
+        breadcrumb.hide();
+      })
+
+
+
+
+  </script>
+
+
+</body>
+
+</html>
