@@ -18,7 +18,8 @@ d3.breadcrumb = function (params) {
     fontSize: 14,
     marginLeft: 0,
     marginTop: 10,
-    wrapWidth: null,
+    leftDirection: false,
+    wrapWidth: 0,
     data: null
   };
 
@@ -60,20 +61,24 @@ d3.breadcrumb = function (params) {
           .data(sequenceArray, d => d.id)
 
         g.exit().remove();
-        var entering = g.enter().append('svg:g')
+        var entering = g.enter().append('svg:g').style('pointer-events', 'none')
         entering.append("svg:polygon")
           .style('fill', (d, i) => {
             if (d.fill) return d.fill;
             return defaultColors[i % defaultColors.length];
           })
 
-        entering.append('svg:text').attr("x", 20).attr("y", attrs.height / 2).attr("dy", "0.4em").attr("text-anchor", "start").attr('fill', 'white')
+        var enteredText = entering.append('svg:text').attr("x", 20).attr("y", attrs.height / 2).attr("dy", "0.4em").attr("text-anchor", "start").attr('fill', 'white')
           // .attr('font-size', _var.fontSizes.sequenceFontSize)
           .attr('font-weight', 100)
           .attr('font-size', d => {
             return d.fontSize ? d.fontSize : attrs.fontSize;
           })
           .text(function (d) { return d.text; });
+
+        if (attrs.leftDirection) {
+          enteredText.attr('text-anchor', 'middle')
+        }
 
         var all = entering.merge(g)
           .attr('class', 'breadcrumbs')
@@ -82,17 +87,41 @@ d3.breadcrumb = function (params) {
           });
 
         var startX = attrs.marginLeft;
+        var lastYDiv = 0;
         all.each(function (d, i, arr) {
           var wrapper = d3.select(this);
           var text = wrapper.select('text');
           var bbox = text.node().getBBox();
-          var yDiv = Math.floor(startX / attrs.wrapWidth);
+
+          var yDiv;
+
+
+
+          if (attrs.wrapWidth == 0) {
+            yDiv = 0;
+          } else {
+            yDiv = Math.floor(startX / attrs.wrapWidth);
+            if (yDiv > lastYDiv) {
+              startX = yDiv * attrs.wrapWidth;
+              lastYDiv = yDiv;
+            }
+          }
+
+
           wrapper.attr('transform', 'translate(' + (startX - yDiv * attrs.wrapWidth) + ',' + yDiv * (attrs.height + attrs.marginTop) + ')');
-          wrapper.select('polygon').attr('points', breadcrumbPoints(d, i, arr, bbox.width + 35));
+          var poligons = wrapper.select('polygon')
+
+          if (attrs.leftDirection) {
+            poligons.attr('points', rotatedBreadcrumbPoints(d, i, arr, bbox.width + 35));
+          } else {
+            poligons.attr('points', breadcrumbPoints(d, i, arr, bbox.width + 35));
+          }
+
+
           startX += bbox.width + 35 + attrs.padding;
         })
 
-        //   all.select('polygon').attr('points', breadcrumbPoints)
+
         g.exit().remove();
         breadcrumbTrail.selectAll('.breadcrumbs').attr('visibility', '')
       }
@@ -111,6 +140,25 @@ d3.breadcrumb = function (params) {
         points.push("0," + attrs.height);
         if (i > 0) {
           points.push(attrs.top + "," + (attrs.height / 2));
+        }
+        return points.join(" ");
+      }
+
+      function rotatedBreadcrumbPoints(d, i, arr, width) {
+        var points = [];
+        if (width) {
+          attrs.width = width;
+        }
+        points.push("0,0");
+
+        points.push(attrs.width + ",0");
+        if (i < (arr.length - 1)) {
+          points.push(attrs.width - attrs.top + "," + (attrs.height / 2));
+        }
+        points.push(attrs.width + "," + attrs.height);
+        points.push("0," + attrs.height);
+        if (i > 0) {
+          points.push(-attrs.top + "," + (attrs.height / 2));
         }
         return points.join(" ");
       }

@@ -6,7 +6,11 @@
   <meta charset="UTF-8">
   <title>Geomapping </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <style>
+    body {
+      font-family: "Helvetica"
+    }
+  </style>
 </head>
 
 <body translate="no">
@@ -14,18 +18,56 @@
   <div class="container centered">
     <div id="myGraph"></div>
   </div>
-  <script src="d3.v4.min.js"></script>
+  <div>
+    <textarea>
+        //just edit breadcrumb's default options here and see result above
+        breadcrumb = d3.breadcrumb()
+          .container('svg')
+          .padding(2)
+          .wrapWidth(500)
+      
+        breadcrumb.show([{text:"Home"},{text:"Products"},{text:"Phones"},{text:"Some  Phone"}]);
+    </textarea>
+  </div>
+  <script src="libs/d3.v4.min.js"></script>
+  <script src="libs/codemirror.js"></script>
+  <script src="libs/javascript.js"></script>
+  <LINK REL=StyleSheet HREF="libs/codemirror.css" TYPE="text/css">
   <script src="breadcrumb.js"></script>
+  <script>
+    //initialize code editor
+    var myCodeMirror = CodeMirror.fromTextArea(
+      document.getElementsByTagName('textarea')[0],
+      {
+        lineNumbers: true,
+        mode: "javascript",
+        matchBrackets: true,
+      }
+    );
+
+    myCodeMirror.on("change", function (cm, change, text) {
+      var value = myCodeMirror.getValue();
+      eval(value)
+
+    });
+  </script>
 
   <script>
 
-    var svg = d3.select('body').append('svg').style('overflow', 'visible');
+    var svg = d3.select('#myGraph')
+      .append('svg')
+      .attr('width', 500)
+      .attr('height', 400)
+      .style('overflow', 'visible');
 
     //initialize
     var breadcrumb = d3.breadcrumb()
       .container('svg')
       .padding(5)
       .wrapWidth(1200)
+
+
+
 
     var topY = 230;
 
@@ -47,7 +89,7 @@
         svg.selectAll('rect')
           .filter(d => d < i)
           .attr('fill', 'orange')
-        var items = d3.range(i + 1).map(d => { return { text: d} });
+        var items = d3.range(i + 1).map(d => { return { text: d } });
         breadcrumb.show(items);
       })
       .on('mouseleave', function (d) {
