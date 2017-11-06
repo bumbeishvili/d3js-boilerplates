@@ -1,7 +1,11 @@
 # d3js-boilerplate
-D3 js templates for fast initial setup
-
-Content
+D3 js templates for fast initial setup  
+Outer links 
++ Components
+   - [Breadcrumbs](https://github.com/bumbeishvili/d3-breadcrumbs)
+   
+   
+Same page content
 + [Colors](#colors)
    - [Metronic Color Palette](#metronic-dark-color-palette)
    - [Multiple Color Interpolation](#multiple-color-interpolation)
