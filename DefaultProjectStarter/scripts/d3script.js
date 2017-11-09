@@ -9,9 +9,9 @@ https://github.com/bumbeishvili/d3-coding-conventions/blob/84b538fa99e43647d0d47
 
 function renderChart(params) {
 
-  // exposed variables
+  // Exposed variables
   var attrs = {
-    id: "ID" + Math.floor(Math.random() * 1000000),  // id for event handlings
+    id: "ID" + Math.floor(Math.random() * 1000000),  // Id for event handlings
     svgWidth: 400,
     svgHeight: 400,
     marginTop: 5,
@@ -22,44 +22,35 @@ function renderChart(params) {
     data: null
   };
 
-  /*############### IF EXISTS OVERWRITE ATTRIBUTES FROM PASSED PARAM  #######  */
 
-  var attrKeys = Object.keys(attrs);
-  attrKeys.forEach(function (key) {
-    if (params && params[key]) {
-      attrs[key] = params[key];
-    }
-  })
-
-  //innerFunctions which will update visuals
+  //InnerFunctions which will update visuals
   var updateData;
 
-  //main chart object
+  //Main chart object
   var main = function (selection) {
     selection.each(function scope() {
 
-      //calculated properties
+      //Calculated properties
       var calc = {}
+      calc.id = "ID" + Math.floor(Math.random() * 1000000);  // id for event handlings
       calc.chartLeftMargin = attrs.marginLeft;
       calc.chartTopMargin = attrs.marginTop;
       calc.chartWidth = attrs.svgWidth - attrs.marginRight - calc.chartLeftMargin;
       calc.chartHeight = attrs.svgHeight - attrs.marginBottom - calc.chartTopMargin;
 
-      //drawing containers
+      //Drawing containers
       var container = d3.select(this);
 
-      //add svg
+      //Add svg
       var svg = container.patternify({ tag: 'svg', selector: 'svg-chart-container' })
         .attr('width', attrs.svgWidth)
         .attr('height', attrs.svgHeight)
-      // .attr("viewBox", "0 0 " + attrs.svgWidth + " " + attrs.svgHeight)
-      // .attr("preserveAspectRatio", "xMidYMid meet")
 
-      //add container g element
+      //Add container g element
       var chart = svg.patternify({ tag: 'g', selector: 'chart' })
         .attr('transform', 'translate(' + (calc.chartLeftMargin) + ',' + calc.chartTopMargin + ')');
 
-      // smoothly handle data updating
+      // Smoothly handle data updating
       updateData = function () {
 
       }
@@ -67,19 +58,19 @@ function renderChart(params) {
 
       function debug() {
         if (attrs.isDebug) {
-          //stringify func
+          //Stringify func
           var stringified = scope + "";
 
-          // parse variable names
+          // Parse variable names
           var groupVariables = stringified
-            //match var x-xx= {};
+            //Match var x-xx= {};
             .match(/var\s+([\w])+\s*=\s*{\s*}/gi)
-            //match xxx
+            //Match xxx
             .map(d => d.match(/\s+\w*/gi).filter(s => s.trim()))
-            //get xxx
+            //Get xxx
             .map(v => v[0].trim())
 
-          //assign local variables to the scope
+          //Assign local variables to the scope
           groupVariables.forEach(v => {
             main['P_' + v] = eval(v)
           })
@@ -96,7 +87,7 @@ function renderChart(params) {
     var elementTag = params.tag;
     var data = params.data || [selector];
 
-    // pattern in action
+    // Pattern in action
     var selection = container.selectAll('.' + selector).data(data)
     selection.exit().remove();
     selection = selection.enter().append(elementTag).merge(selection)
@@ -104,7 +95,7 @@ function renderChart(params) {
     return selection;
   }
 
-  //dinamic keys functions
+  //Dynamic keys functions
   Object.keys(attrs).forEach(key => {
     // Attach variables to main function
     return main[key] = function (_) {
@@ -115,10 +106,10 @@ function renderChart(params) {
     };
   });
 
-  //set attrs as property
+  //Set attrs as property
   main.attrs = attrs;
 
-  //debugging visuals
+  //Debugging visuals
   main.debug = function (isDebug) {
     attrs.isDebug = isDebug;
     if (isDebug) {
@@ -128,7 +119,7 @@ function renderChart(params) {
     return main;
   }
 
-  //exposed update functions
+  //Exposed update functions
   main.data = function (value) {
     if (!arguments.length) return attrs.data;
     attrs.data = value;
@@ -138,7 +129,7 @@ function renderChart(params) {
     return main;
   }
 
-  // run  visual
+  // Run  visual
   main.run = function () {
     d3.selectAll(attrs.container).call(main);
     return main;
