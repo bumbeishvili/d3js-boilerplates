@@ -11,6 +11,7 @@ function renderChart(params) {
 
   // exposed variables
   var attrs = {
+    id: "ID" + Math.floor(Math.random() * 1000000),  // id for event handlings
     svgWidth: 400,
     svgHeight: 400,
     marginTop: 5,
