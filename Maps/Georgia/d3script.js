@@ -138,8 +138,15 @@ function getChart(params) {
     var elementTag = params.tag;
     var data = params.data || [selector];
 
-    // pattern in action
-    var selection = container.selectAll('.' + selector).data(data)
+    // Pattern in action
+    var selection = container.selectAll('.' + selector).data(data, (d, i) => {
+            if (typeof d === "object") {
+                if (d.id) {
+                    return d.id;
+                }
+            }
+            return i;
+        })
     selection.exit().remove();
     selection = selection.enter().append(elementTag).merge(selection)
     selection.attr('class', selector);
