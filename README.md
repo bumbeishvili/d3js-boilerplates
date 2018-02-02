@@ -1,11 +1,21 @@
-# d3js-boilerplate
-D3 js templates for fast initial setup  
-Outer links 
+# About
+
+This is d3.js starter (and continuer **:)** ) repository, which is used in my d3.js projects. It helps me to start , continue and finish d3 projects fast
+
+* [World Map Boilerplate](d3js-boilerplates/Maps/World)
+* [Georgian Map Boilerplate](d3js-boilerplates/Maps/World)
+* [Default Project Starter](d3js-boilerplates/DefaultProjectStarter)
+
+
+# Additional content and helpers
+
+External links 
 + Components
    - [Breadcrumbs](https://github.com/bumbeishvili/d3-breadcrumbs)
    - [Tooltip](https://bumbeishvili.github.io/d3-tooltip/)
++ [Coding Conventions](https://github.com/bumbeishvili/d3-coding-conventions)
    
-Same page content
+Internal links
 + [Colors](#colors)
    - [Metronic Color Palette](#metronic-dark-color-palette)
    - [Multiple Color Interpolation](#multiple-color-interpolation)
