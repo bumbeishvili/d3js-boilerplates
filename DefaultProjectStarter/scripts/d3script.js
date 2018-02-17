@@ -19,6 +19,7 @@ function renderChart(params) {
     marginRight: 5,
     marginLeft: 5,
     container: 'body',
+    defaultTextFill: '#2C3E50',
     data: null
   };
 
