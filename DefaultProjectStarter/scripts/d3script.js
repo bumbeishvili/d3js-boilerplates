@@ -20,6 +20,7 @@ function renderChart(params) {
     marginLeft: 5,
     container: 'body',
     defaultTextFill: '#2C3E50',
+    defaultFont: 'Helvetica',
     data: null
   };
 
