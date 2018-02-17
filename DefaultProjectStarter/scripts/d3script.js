@@ -68,7 +68,6 @@ function renderChart(params) {
       }
 
       function setSvgWidthAndHeight() {
-        var container = d3.select(this);
         var containerRect = container.node().getBoundingClientRect();
         if (containerRect.width > 0)
           attrs.svgWidth = containerRect.width;
