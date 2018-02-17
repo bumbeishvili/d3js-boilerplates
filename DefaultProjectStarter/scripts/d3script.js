@@ -47,6 +47,7 @@ function renderChart(params) {
       var svg = container.patternify({ tag: 'svg', selector: 'svg-chart-container' })
         .attr('width', attrs.svgWidth)
         .attr('height', attrs.svgHeight)
+        .attr('font-family', attrs.defaultFont);
 
       //Add container g element
       var chart = svg.patternify({ tag: 'g', selector: 'chart' })
