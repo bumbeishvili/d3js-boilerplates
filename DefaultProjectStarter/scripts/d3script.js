@@ -59,6 +59,25 @@ function renderChart(params) {
       }
       //#########################################  UTIL FUNCS ##################################
 
+      function handleWindowResize() {
+        d3.select(window).on('resize.' + attrs.id, function () {
+          setDimensions();
+        });
+      }
+
+      function setDimensions() {
+        setSvgWidthAndHeight();
+        container.call(main);
+      }
+
+      function setSvgWidthAndHeight() {
+        var containerRect = container.node().getBoundingClientRect();
+        if (containerRect.width > 0)
+          attrs.svgWidth = containerRect.width;
+        if (containerRect.height > 0)
+          attrs.svgHeight = containerRect.height;
+      }
+
       function debug() {
         if (attrs.isDebug) {
           //Stringify func
@@ -92,13 +111,13 @@ function renderChart(params) {
 
     // Pattern in action
     var selection = container.selectAll('.' + selector).data(data, (d, i) => {
-            if (typeof d === "object") {
-                if (d.id) {
-                    return d.id;
-                }
-            }
-            return i;
-        })
+      if (typeof d === "object") {
+        if (d.id) {
+          return d.id;
+        }
+      }
+      return i;
+    })
     selection.exit().remove();
     selection = selection.enter().append(elementTag).merge(selection)
     selection.attr('class', selector);
