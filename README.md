@@ -160,6 +160,9 @@ Javascript helper prototype functions
 
 
 ## groupBy 
+#### Observe at observable 
+https://beta.observablehq.com/@bumbeishvili/group-array-by-multiple-key  
+
 #### usage  
 `arr.groupBy(['MessageGroupId','FlowId'])`
 
