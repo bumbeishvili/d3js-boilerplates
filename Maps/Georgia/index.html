@@ -17,21 +17,22 @@
     <div class="container centered">
         <div id="myGraph"></div>
     </div>
-    <script src="d3.v4.min.js"></script>
+    <script src="d3.v5.min.js"></script>
     <script src="d3script.js"></script>
 
     <script>
-        d3.json('geo_regions.json', function (json) {
-            var chart = getChart()
-                .svgHeight(window.innerHeight - 30)
-                .svgWidth(window.innerWidth - 30)
-                .geojson(json)
-                .data('Pass Something Here and use it as attrs.data')
-                .debug(true)
-                .container('#myGraph')
-                .run()
+        d3.json('geo_regions.json')
+            .then(json => {
+                var chart = getChart()
+                    .svgHeight(window.innerHeight - 30)
+                    .svgWidth(window.innerWidth - 30)
+                    .geojson(json)
+                    .data('Pass Something Here and use it as attrs.data')
+                    .debug(true)
+                    .container('#myGraph')
+                    .run()
 
-        })
+            })
     </script>
 
 
