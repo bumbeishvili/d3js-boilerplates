@@ -12,15 +12,7 @@
         }
 
         svg {
-            background-color: white;
-        }
-
-        #myGraph {
-            min-width: 300px;
-            min-height: 300px;
-            max-height: 1000px;
-            max-width: 1000px;
-            width: 30%;
+            background-color: #FAFAFA;
         }
     </style>
 </head>
@@ -30,19 +22,23 @@
     <div class="container centered">
         <div id="myGraph"></div>
     </div>
-    <script src="libs/d3.v4.min.js"></script>
+    <script src="libs/d3.v5.min.js"></script>
     <script src="scripts/d3script.js"></script>
 
     <script>
 
+        d3.json('data.json')
+            .then(data => {
+                var chart = renderChart()
+                    .svgHeight(window.innerHeight - 30)
+                    .svgWidth(window.innerWidth - 30)
+                    .container('#myGraph')
+                    .data(data)
+                    .debug(true)
+                    .run()
 
-        var chart = renderChart()
-            .svgHeight(window.innerHeight - 30)
-            .svgWidth(window.innerWidth - 30)
-            .container('#myGraph')
-            .data('Pass Something Here and use it as attrs.data')
-            .debug(true)
-            .run()
+            })
+
 
 
     </script>

@@ -53,17 +53,28 @@ function renderChart(params) {
       var chart = svg.patternify({ tag: 'g', selector: 'chart' })
         .attr('transform', 'translate(' + (calc.chartLeftMargin) + ',' + calc.chartTopMargin + ')');
 
+      // REMOVE THIS SNIPPETH AFTER YOU START THE DEVELOPMENT
+      chart.patternify({ tag: 'text', selector: 'example-text', data: [attrs.data.message] })
+        .text(d => d)
+        .attr('x', 10)
+        .attr('y', 20)
+
+
       // Smoothly handle data updating
       updateData = function () {
 
       }
-      //#########################################  UTIL FUNCS ##################################
 
+      handleWindowResize();
+
+
+      //#########################################  UTIL FUNCS ##################################
       function handleWindowResize() {
         d3.select(window).on('resize.' + attrs.id, function () {
           setDimensions();
         });
       }
+
 
       function setDimensions() {
         setSvgWidthAndHeight();
@@ -77,6 +88,7 @@ function renderChart(params) {
         if (containerRect.height > 0)
           attrs.svgHeight = containerRect.height;
       }
+
 
       function debug() {
         if (attrs.isDebug) {
