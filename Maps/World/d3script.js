@@ -4,8 +4,9 @@
 
 
 function getChart(params) {
-    // exposed variables
+    // Exposed variables
     var attrs = {
+        id: "ID" + Math.floor(Math.random() * 1000000),  // Id for event handlings
         svgWidth: 700,
         svgHeight: 700,
         marginTop: 5,
@@ -15,35 +16,27 @@ function getChart(params) {
         center: [43.5, 44],
         scale: 250,
         container: 'body',
+        defaultTextFill: '#2C3E50',
+        defaultFont: 'Helvetica',
         geojson: null,
         data: null
     };
 
-
-    /*############### IF EXISTS OVERWRITE ATTRIBUTES FROM PASSED PARAM  #######  */
-
-    var attrKeys = Object.keys(attrs);
-    attrKeys.forEach(function (key) {
-        if (params && params[key]) {
-            attrs[key] = params[key];
-        }
-    })
-
-
-    //innerFunctions
+    //InnerFunctions
     var updateData;
 
-
-    //main chart object
+    //Main chart object
     var main = function (selection) {
-        selection.each(function () {
+        selection.each(function scope() {
 
-            //calculated properties
+            //Drawing containers
+            var container = d3.select(this);
+
+            //Calculated properties
             var calc = {}
-
+            calc.id = "ID" + Math.floor(Math.random() * 1000000);  // id for event handlings
             calc.chartLeftMargin = attrs.marginLeft;
             calc.chartTopMargin = attrs.marginTop;
-
             calc.chartWidth = attrs.svgWidth - attrs.marginRight - calc.chartLeftMargin;
             calc.chartHeight = attrs.svgHeight - attrs.marginBottom - calc.chartTopMargin;
 
@@ -53,29 +46,9 @@ function getChart(params) {
                 zoomed: null
             }
 
-
-
             /*##################################   BEHAVIORS ####################################### */
             var behaviors = {};
-
             behaviors.zoom = d3.zoom().on("zoom", d => handlers.zoomed(d));
-
-            //################################ DRAWING ######################  
-            //drawing containers
-            var container = d3.select(this);
-
-            //drawing
-            var svg = container.patternify({ tag: 'svg', selector: 'svg-chart-container' })
-                .attr('width', attrs.svgWidth)
-                .attr('height', attrs.svgHeight)
-                .call(behaviors.zoom);
-            // .attr("viewBox", "0 0 " + attrs.svgWidth + " " + attrs.svgHeight)
-            // .attr("preserveAspectRatio", "xMidYMid meet")
-
-            var chart = svg.patternify({ tag: 'g', selector: 'chart' })
-                .attr('width', calc.chartWidth)
-                .attr('height', calc.chartHeight)
-                .attr('transform', 'translate(' + (calc.chartLeftMargin) + ',' + calc.chartTopMargin + ')')
 
             /* ############# PROJECTION ############### */
 
@@ -87,12 +60,25 @@ function getChart(params) {
             var path = d3.geoPath()
                 .projection(projection);
 
-            /* ##############  DRAWING ################# */
+            //################################ DRAWING ######################  
+
+            //Drawing
+            var svg = container.patternify({ tag: 'svg', selector: 'svg-chart-container' })
+                .attr('width', attrs.svgWidth)
+                .attr('height', attrs.svgHeight)
+                .attr('font-family', attrs.defaultFont)
+                .call(behaviors.zoom);
+
+            var chart = svg.patternify({ tag: 'g', selector: 'chart' })
+                .attr('transform', 'translate(' + (calc.chartLeftMargin) + ',' + calc.chartTopMargin + ')')
 
 
             chart.patternify({ tag: 'path', selector: 'map-path', data: attrs.geojson.features })
                 .attr('d', path)
                 .attr('fill', d => '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6)) //random color
+
+
+            handleWindowResize();
 
 
 
@@ -102,14 +88,31 @@ function getChart(params) {
                 chart.attr('transform', transform);
             }
 
-            // smoothly handle data updating
-            updateData = function () {
+            function handleWindowResize() {
+                d3.select(window).on('resize.' + attrs.id, function () {
+                    setDimensions();
+                });
+            }
 
+            function setDimensions() {
+                setSvgWidthAndHeight();
+                container.call(main);
+            }
+
+            function setSvgWidthAndHeight() {
+                var containerRect = container.node().getBoundingClientRect();
+                if (containerRect.width > 0)
+                    attrs.svgWidth = containerRect.width;
+                if (containerRect.height > 0)
+                    attrs.svgHeight = containerRect.height;
+            }
+
+            // Smoothly handle data updating
+            updateData = function () {
 
             }
 
             //#########################################  UTIL FUNCS ##################################
-
             function debug() {
                 if (attrs.isDebug) {
                     //stringify func
@@ -131,31 +134,30 @@ function getChart(params) {
                 }
             }
             debug();
-
         });
     }
 
 
     //----------- PROTOTYEPE FUNCTIONS  ----------------------
     d3.selection.prototype.patternify = function (params) {
-      var container = this;
-      var selector = params.selector;
-      var elementTag = params.tag;
-      var data = params.data || [selector];
-  
-      // Pattern in action
-      var selection = container.selectAll('.' + selector).data(data, (d, i) => {
-              if (typeof d === "object") {
-                  if (d.id) {
-                      return d.id;
-                  }
-              }
-              return i;
-          })
-      selection.exit().remove();
-      selection = selection.enter().append(elementTag).merge(selection)
-      selection.attr('class', selector);
-      return selection;
+        var container = this;
+        var selector = params.selector;
+        var elementTag = params.tag;
+        var data = params.data || [selector];
+
+        // Pattern in action
+        var selection = container.selectAll('.' + selector).data(data, (d, i) => {
+            if (typeof d === "object") {
+                if (d.id) {
+                    return d.id;
+                }
+            }
+            return i;
+        })
+        selection.exit().remove();
+        selection = selection.enter().append(elementTag).merge(selection)
+        selection.attr('class', selector);
+        return selection;
     }
 
     //dinamic keys functions

@@ -53,7 +53,7 @@ function renderChart(params) {
       var chart = svg.patternify({ tag: 'g', selector: 'chart' })
         .attr('transform', 'translate(' + (calc.chartLeftMargin) + ',' + calc.chartTopMargin + ')');
 
-      // REMOVE THIS SNIPPETH AFTER YOU START THE DEVELOPMENT
+      // REMOVE THIS SNIPPET AFTER YOU START THE DEVELOPMENT
       chart.patternify({ tag: 'text', selector: 'example-text', data: [attrs.data.message] })
         .text(d => d)
         .attr('x', 10)

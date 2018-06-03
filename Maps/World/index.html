@@ -29,10 +29,9 @@
                     .svgHeight(window.innerHeight - 30)
                     .svgWidth(window.innerWidth - 30)
                     .geojson(json)
+                    .container('#myGraph')
                     .data('Pass Something Here and use it as attrs.data')
-
-                d3.select("#myGraph")
-                    .call(chart);
+                    .run()
 
             })
     </script>
