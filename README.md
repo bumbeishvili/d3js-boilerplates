@@ -2,9 +2,9 @@
 
 This is d3.js starter (and continuer **:)** ) repository, which is used in my d3.js projects. It helps me to start , continue and finish d3 projects fast
 
-* [World Map Boilerplate](d3js-boilerplates/Maps/World)
-* [Georgian Map Boilerplate](d3js-boilerplates/Maps/World)
-* [Default Project Starter](d3js-boilerplates/DefaultProjectStarter)
+* [World Map Boilerplate](https://github.com/bumbeishvili/d3js-boilerplates/tree/gh-pages/Maps/World)
+* [Georgian Map Boilerplate](https://github.com/bumbeishvili/d3js-boilerplates/tree/gh-pages/Maps/World)
+* [Default Project Starter](https://github.com/bumbeishvili/d3js-boilerplates/tree/gh-pages/DefaultProjectStarter)
 
 
 # Additional content and helpers
