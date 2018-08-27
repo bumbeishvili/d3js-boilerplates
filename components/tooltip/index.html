@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Tooltip </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/png" href="assets/fav.png" />
+  <meta property="og:title" content="D3 Tooltip" />
+  <meta property="og:description" content="Usage made easy" />
+  <meta property="og:image" content="https://bumbeishvili.github.io/d3-tooltip/assets/shared.png" />
+  <style>
+    body {
+      font-family: "Helvetica"
+    }
+  </style>
+</head>
+
+<body translate="no">
+  <div class="container centered">
+    <div id="myGraph"></div>
+  </div>
+  <script src="libs/d3.v4.min.js"></script>
+  <script src="libs/javascript.js"></script>
+  <LINK REL=StyleSheet HREF="libs/codemirror.css" TYPE="text/css">
+  <script src="tooltip.js"></script>
+  <script>
+    //initialize code editor
+    var myCodeMirror = CodeMirror.fromTextArea(
+      document.getElementsByTagName('textarea')[0],
+      {
+        lineNumbers: true,
+        mode: "javascript",
+        matchBrackets: true,
+      }
+    );
+
+    myCodeMirror.setSize(700, 700);
+
+    myCodeMirror.on("change", function (cm, change, text) {
+      var value = myCodeMirror.getValue();
+      eval(value)
+    });
+  </script>
+
+  <script>
+
+    var svg = d3.select('#myGraph')
+      .append('svg')
+      .attr('width', 500)
+      .attr('class', 'svg-element')
+      .attr('height', 400)
+      .style('overflow', 'visible');
+
+    //initialize
+    var tooltip = d3.componentsTooltip()
+      .container('.svg-element')
+      .content([
+        {
+          left: "default id",
+          right: "{id}"
+        },
+        {
+          left: "new id",
+          right: "{id}"
+        },
+      ])
+
+
+
+
+
+    var topY = 230;
+
+
+    svg.append('text').text('Hover to see :)').attr('y', 200).attr('x', 200)
+    svg.selectAll('rect')
+      .data(d3.range(100).map(d => d - 1))
+      .enter()
+      .append('rect')
+      .attr('fill', 'aqua')
+      .attr('width', 20)
+      .attr('height', 20)
+      .attr('y', (d, i) => {
+        return topY + 21 * Math.floor(i / 25);
+      })
+      .attr('x', (d, i) => {
+        return 200 + (i % 25) * 21;
+      })
+      .on('mouseenter', function (d, i) {
+
+        d3.select(this)
+          .attr('fill', 'orange');
+
+        var item = d3.select(this);
+        var x = +item.attr('x');
+        var y = +item.attr('y');
+        var direction = ["top", "left", "right", "bottom"][Math.floor(i / 25)];
+        switch (direction) {
+          case "bottom": x += 10; break;
+          case "top": y += 25; x += 10; break
+          case "left": x += 25; y += 11; break;
+          case "right": y += 11; break;
+        }
+
+        var obj = {
+          index: d + 1,
+          isEven: d % 2 == 1,
+          isPrime: "I am lazy :)"
+        }
+        var rows = [
+          {
+            left: "Number",
+            right: "{index}"
+          },
+          {
+            left: "Is even",
+            right: "{isEven}"
+          },
+        ]
+        if (i % 5 > 1) {
+          rows.push({ left: "Is prime", right: "{isPrime}" })
+        }
+        if (i % 5 > 2) {
+          rows.push({ left: "Other thing", right: "Other value" })
+        }
+        if (i % 5 > 3) {
+          rows.push({ left: "Again", right: "Other,other value" })
+        }
+
+        tooltip
+          .x(x)
+          .y(y)
+          .textColor("white")
+          .tooltipFill(defaultColors[i % defaultColors.length])
+          .direction(direction)
+          .content(rows)
+          .show(obj)
+
+      })
+      .on('mouseleave', function (d) {
+        svg.selectAll('rect').attr('fill', 'aqua')
+        tooltip.hide();
+      })
+
+
+    var defaultColors = ["#c5bf66", "#BF55EC", "#f36a5a", "#EF4836", "#9A12B3", "#c8d046", "#E26A6A",
+      "#32c5d2", "#8877a9", "#ACB5C3", "#e35b5a", "#2f353b", "#e43a45", "#f2784b",
+      "#796799", "#26C281", "#555555", "#525e64", "#8E44AD", "#4c87b9", "#bfcad1",
+      "#67809F", "#578ebe", "#c5b96b", "#4DB3A2", "#e7505a", "#D91E18", "#1BBC9B",
+      "#3faba4", "#d05454", "#8775a7", "#8775a7", "#8E44AD", "#f3c200", "#4B77BE",
+      "#c49f47", "#44b6ae", "#36D7B7", "#94A0B2", "#9B59B6", "#E08283", "#3598dc",
+      "#F4D03F", "#F7CA18", "#22313F", "#2ab4c0", "#5e738b", "#BFBFBF", "#2C3E50",
+      "#5C9BD1", "#95A5A6", "#E87E04", "#29b4b6", "#1BA39C"]
+
+
+  </script>
+
+
+</body>
+
+</html>
