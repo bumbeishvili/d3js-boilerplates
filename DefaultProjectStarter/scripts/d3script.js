@@ -29,92 +29,66 @@ function renderChart(params) {
   var updateData;
 
   //Main chart object
-  var main = function (selection) {
-    selection.each(function scope() {
+  var main = function () {
 
-      //Calculated properties
-      var calc = {}
-      calc.id = "ID" + Math.floor(Math.random() * 1000000);  // id for event handlings
-      calc.chartLeftMargin = attrs.marginLeft;
-      calc.chartTopMargin = attrs.marginTop;
-      calc.chartWidth = attrs.svgWidth - attrs.marginRight - calc.chartLeftMargin;
-      calc.chartHeight = attrs.svgHeight - attrs.marginBottom - calc.chartTopMargin;
+    //Calculated properties
+    var calc = {}
+    calc.id = "ID" + Math.floor(Math.random() * 1000000);  // id for event handlings
+    calc.chartLeftMargin = attrs.marginLeft;
+    calc.chartTopMargin = attrs.marginTop;
+    calc.chartWidth = attrs.svgWidth - attrs.marginRight - calc.chartLeftMargin;
+    calc.chartHeight = attrs.svgHeight - attrs.marginBottom - calc.chartTopMargin;
 
-      //Drawing containers
-      var container = d3.select(this);
+    //Drawing containers
+    var container = d3.select(attrs.container);
 
-      //Add svg
-      var svg = container.patternify({ tag: 'svg', selector: 'svg-chart-container' })
-        .attr('width', attrs.svgWidth)
-        .attr('height', attrs.svgHeight)
-        .attr('font-family', attrs.defaultFont);
+    //Add svg
+    var svg = container.patternify({ tag: 'svg', selector: 'svg-chart-container' })
+      .attr('width', attrs.svgWidth)
+      .attr('height', attrs.svgHeight)
+      .attr('font-family', attrs.defaultFont);
 
-      //Add container g element
-      var chart = svg.patternify({ tag: 'g', selector: 'chart' })
-        .attr('transform', 'translate(' + (calc.chartLeftMargin) + ',' + calc.chartTopMargin + ')');
+    //Add container g element
+    var chart = svg.patternify({ tag: 'g', selector: 'chart' })
+      .attr('transform', 'translate(' + (calc.chartLeftMargin) + ',' + calc.chartTopMargin + ')');
 
-      // REMOVE THIS SNIPPET AFTER YOU START THE DEVELOPMENT
-      chart.patternify({ tag: 'text', selector: 'example-text', data: [attrs.data.message] })
-        .text(d => d)
-        .attr('x', 10)
-        .attr('y', 20)
+    // REMOVE THIS SNIPPET AFTER YOU START THE DEVELOPMENT
+    chart.patternify({ tag: 'text', selector: 'example-text', data: [attrs.data.message] })
+      .text(d => d)
+      .attr('x', 10)
+      .attr('y', 20)
 
+    // Smoothly handle data updating
+    updateData = function () {
 
-      // Smoothly handle data updating
-      updateData = function () {
+    }
 
-      }
-
-      handleWindowResize();
+    handleWindowResize();
 
 
-      //#########################################  UTIL FUNCS ##################################
-      function handleWindowResize() {
-        d3.select(window).on('resize.' + attrs.id, function () {
-          setDimensions();
-        });
-      }
+    //#########################################  UTIL FUNCS ##################################
+    function handleWindowResize() {
+      d3.select(window).on('resize.' + attrs.id, function () {
+        setDimensions();
+      });
+    }
 
 
-      function setDimensions() {
-        setSvgWidthAndHeight();
-        container.call(main);
-      }
+    function setDimensions() {
+      setSvgWidthAndHeight();
+      container.call(main);
+    }
 
-      function setSvgWidthAndHeight() {
-        var containerRect = container.node().getBoundingClientRect();
-        if (containerRect.width > 0)
-          attrs.svgWidth = containerRect.width;
-        if (containerRect.height > 0)
-          attrs.svgHeight = containerRect.height;
-      }
+    function setSvgWidthAndHeight() {
+      var containerRect = container.node().getBoundingClientRect();
+      if (containerRect.width > 0)
+        attrs.svgWidth = containerRect.width;
+      //if (containerRect.height > 0)  attrs.svgHeight = containerRect.height;
+    }
 
-
-      function debug() {
-        if (attrs.isDebug) {
-          //Stringify func
-          var stringified = scope + "";
-
-          // Parse variable names
-          var groupVariables = stringified
-            //Match var x-xx= {};
-            .match(/var\s+([\w])+\s*=\s*{\s*}/gi)
-            //Match xxx
-            .map(d => d.match(/\s+\w*/gi).filter(s => s.trim()))
-            //Get xxx
-            .map(v => v[0].trim())
-
-          //Assign local variables to the scope
-          groupVariables.forEach(v => {
-            main['P_' + v] = eval(v)
-          })
-        }
-      }
-      debug();
-    });
   };
 
-  //----------- PROTOTYEPE FUNCTIONS  ----------------------
+  //----------- PROTOTYPE FUNCTIONS  ----------------------
   d3.selection.prototype.patternify = function (params) {
     var container = this;
     var selector = params.selector;
@@ -150,16 +124,6 @@ function renderChart(params) {
   //Set attrs as property
   main.attrs = attrs;
 
-  //Debugging visuals
-  main.debug = function (isDebug) {
-    attrs.isDebug = isDebug;
-    if (isDebug) {
-      if (!window.charts) window.charts = [];
-      window.charts.push(main);
-    }
-    return main;
-  }
-
   //Exposed update functions
   main.data = function (value) {
     if (!arguments.length) return attrs.data;
@@ -172,7 +136,7 @@ function renderChart(params) {
 
   // Run  visual
   main.run = function () {
-    d3.selectAll(attrs.container).call(main);
+    main();
     return main;
   }
 

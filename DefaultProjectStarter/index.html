@@ -20,21 +20,20 @@
 <body translate="no">
 
     <div class="container centered">
-        <div id="myGraph"></div>
+        <div id="graph-container"></div>
     </div>
     <script src="libs/d3.v5.min.js"></script>
     <script src="scripts/d3script.js"></script>
 
     <script>
-
+        let chart;
         d3.json('data.json')
             .then(data => {
-                var chart = renderChart()
+                chart = renderChart()
                     .svgHeight(window.innerHeight - 30)
                     .svgWidth(window.innerWidth - 30)
-                    .container('#myGraph')
+                    .container('#graph-container')
                     .data(data)
-                    .debug(true)
                     .run()
 
             })
