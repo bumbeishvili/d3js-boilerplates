@@ -7,7 +7,7 @@ https://github.com/bumbeishvili/d3-coding-conventions/blob/84b538fa99e43647d0d47
 
 */
 
-function renderChart(params) {
+function Chart() {
 
   // Exposed variables
   var attrs = {
@@ -76,7 +76,7 @@ function renderChart(params) {
 
     function setDimensions() {
       setSvgWidthAndHeight();
-      container.call(main);
+      main();
     }
 
     function setSvgWidthAndHeight() {
@@ -135,7 +135,7 @@ function renderChart(params) {
   }
 
   // Run  visual
-  main.run = function () {
+  main.render = function () {
     main();
     return main;
   }
