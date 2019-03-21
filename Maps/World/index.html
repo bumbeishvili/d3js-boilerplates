@@ -17,13 +17,13 @@
     <div class="container centered">
         <div id="myGraph"></div>
     </div>
-    <script src="d3.v5.min.js"></script>
-    <script src="d3script.js"></script>
+    <script src="libs/d3.v5.min.js"></script>
+    <script src="scripts/d3script.js"></script>
 
     <script>
 
 
-        d3.json('world_countries.json')
+        d3.json('data/world_countries.json')
             .then(json => {
                 var chart = getChart()
                     .svgHeight(window.innerHeight - 30)
