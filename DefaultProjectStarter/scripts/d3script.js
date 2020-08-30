@@ -1,7 +1,10 @@
 class Chart {
     constructor() {
-        const attrs = {
-            id: 'ID' + Math.floor(Math.random() * 1000000),
+        this.createId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
+
+        // Declare initial chart state attributes
+        const state = {
+            id: this.createId(),
             svgWidth: 400,
             svgHeight: 400,
             marginTop: 5,
@@ -11,31 +14,42 @@ class Chart {
             container: 'body',
             defaultTextFill: '#2C3E50',
             defaultFont: 'Helvetica',
+            ctx: document.createElement('canvas').getContext('2d'),
             data: null
         };
 
-        this.getChartState = () => attrs;
+        // Inner state props
+        Object.assign(state, {
+            calc: null,
+            svg: null,
+            chart: null,
+            d3container: null,
+        })
 
-        Object.keys(attrs).forEach((key) => {
+        // Define state getters and setters
+        this.getState = () => state;
+        this.setState = (d) => { Object.assign(state, d) };
+
+        // Automatically generate getters and setters for each state properties
+        Object.keys(state).forEach((key) => {
             //@ts-ignore
-            this[key] = function(_) {
-                var string = `attrs['${key}'] = _`;
+            this[key] = function (_) {
+                var string = `state['${key}'] = _`;
                 if (!arguments.length) {
-                    return eval(`attrs['${key}'];`);
+                    return eval(`state['${key}'];`);
                 }
                 eval(string);
                 return this;
             };
-
-
         });
 
-
+        // Define handful d3 enter, exit, update pattern method
         this.initializeEnterExitUpdatePattern();
     }
 
+    // Define enter exit update pattern shorthand
     initializeEnterExitUpdatePattern() {
-        d3.selection.prototype.patternify = function(params) {
+        d3.selection.prototype.patternify = function (params) {
             var container = this;
             var selector = params.selector;
             var elementTag = params.tag;
@@ -43,11 +57,7 @@ class Chart {
 
             // Pattern in action
             var selection = container.selectAll('.' + selector).data(data, (d, i) => {
-                if (typeof d === 'object') {
-                    if (d.id) {
-                        return d.id;
-                    }
-                }
+                if (typeof d === 'object' && d.id) return d.id;
                 return i;
             });
             selection.exit().remove();
@@ -57,74 +67,98 @@ class Chart {
         };
     }
 
+    // Render Chart
     render() {
-        const attrs = this.getChartState();
+        // Define containers and set SVG width based on container size
+        this.setDynamicContainer();
 
-        //Drawing containers
-        var container = d3.select(attrs.container);
-        var containerRect = container.node().getBoundingClientRect();
-        if (containerRect.width > 0) attrs.svgWidth = containerRect.width;
+        // Calculate some properties
+        this.calculateProperties();
 
-        //Calculated properties
-        var calc = {
-            id: null,
-            chartTopMargin: null,
-            chartLeftMargin: null,
-            chartWidth: null,
-            chartHeight: null
-        };
-        calc.id = 'ID' + Math.floor(Math.random() * 1000000); // id for event handlings
-        calc.chartLeftMargin = attrs.marginLeft;
-        calc.chartTopMargin = attrs.marginTop;
-        calc.chartWidth = attrs.svgWidth - attrs.marginRight - calc.chartLeftMargin;
-        calc.chartHeight = attrs.svgHeight - attrs.marginBottom - calc.chartTopMargin;
+        // Draw SVG and its wrappers
+        this.drawSvgAndWrappers();
 
-        //Add svg
-        var svg = container
-            .patternify({
-                tag: 'svg',
-                selector: 'svg-chart-container'
-            })
-            .attr('width', attrs.svgWidth)
-            .attr('height', attrs.svgHeight)
-            .attr('font-family', attrs.defaultFont);
+        //TODO - REMOVE THIS SNIPPET AFTER YOU START THE DEVELOPMENT
+        this.drawContent();
 
-        //Add container g element
-        var chart = svg
-            .patternify({
-                tag: 'g',
-                selector: 'chart'
-            })
-            .attr('transform', 'translate(' + calc.chartLeftMargin + ',' + calc.chartTopMargin + ')');
+        // listen for resize event and reRender accordingly
+        this.reRenderOnResize();
 
-        // REMOVE THIS SNIPPET AFTER YOU START THE DEVELOPMENT
+        // Allow chaining
+        return this;
+    }
+
+    // TODO - REMOVE THIS SNIPPET AFTER YOU START THE DEVELOPMENT
+    drawContent() {
+        const { chart, data } = this.getState();
         chart
-            .patternify({
-                tag: 'text',
-                selector: 'example-text',
-                data: [attrs.data.message]
-            })
+            .patternify({ tag: 'text', selector: 'example-text', data: [data.message] })
             .text(d => d)
             .attr('x', 10)
             .attr('y', 20);
+    }
 
-
-        //#########################################  UTIL FUNCS ##################################
-
-        d3.select(window).on('resize.' + attrs.id, () => {
-            console.log('resize');
-            var containerRect = container.node().getBoundingClientRect();
-            if (containerRect.width > 0) this.svgWidth(containerRect.width);
+    // Listen resize event and resize on change
+    reRenderOnResize() {
+        const { id, d3Container, svgWidth } = this.getState();
+        d3.select(window).on('resize.' + id, () => {
+            const containerRect = d3Container.node().getBoundingClientRect();
+            const newSvgWidth = containerRect.width > 0 ? containerRect.width : svgWidth;
+            this.setState({ svgWidth: newSvgWidth });
             this.render();
         });
-
-
-        return this;
     }
-  
-    updateData(data){
-        const attrs = this.getChartState();
-        console.log('smoothly updating data');
+
+    // Draw SVG and g wrapper
+    drawSvgAndWrappers() {
+        const { d3Container, svgWidth, svgHeight, defaultFont, calc } = this.getState();
+        const { chartLeftMargin, chartTopMargin, chartWidth, chartHeight } = calc;
+
+        // Draw SVG
+        const svg = d3Container
+            .patternify({ tag: 'svg', selector: 'svg-chart-container' })
+            .attr('width', svgWidth)
+            .attr('height', svgHeight)
+            .attr('font-family', defaultFont);
+
+        //Add container g element
+        var chart = svg
+            .patternify({ tag: 'g', selector: 'chart' })
+            .attr('transform', 'translate(' + chartLeftMargin + ',' + chartTopMargin + ')');
+
+        this.setState({ chart, svg })
+    }
+
+    // Calculate some properties
+    calculateProperties() {
+        const { marginTop, marginLeft, marginRight, marginBottom, svgWidth, svgHeight } = this.getState();
+
+        // Calculated properties
+        var calc = {
+            id: this.createId(), // id for event handlings,
+            chartTopMargin: marginTop,
+            chartLeftMargin: marginLeft,
+            chartWidth: svgWidth - marginRight - marginLeft,
+            chartHeight: svgHeight - marginBottom - marginTop
+        };
+
+        this.setState({ calc })
+    }
+
+    // Set dynamic width for chart
+    setDynamicContainer() {
+        const { container, svgWidth } = this.getState();
+
+        // Drawing containers
+        const d3Container = d3.select(container);
+        var containerRect = d3Container.node().getBoundingClientRect();
+        let newSvgWidth = containerRect.width > 0 ? containerRect.width : svgWidth;
+        this.setState({ d3Container, svgWidth: newSvgWidth });
+    }
+
+    // Expose method for smoothly updating data
+    updateData(newData) {
+        const { data } = this.getChartState();
         return this;
     }
 
