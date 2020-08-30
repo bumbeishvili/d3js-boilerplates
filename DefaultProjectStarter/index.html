@@ -5,29 +5,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Chart</title>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            background-color: #FAFAFA;
-        }
-
-        svg {
-            background-color: #FAFAFA;
-        }
-    </style>
+    <link rel="stylesheet" href="styles/index.css" />
 </head>
 
 <body translate="no">
 
-    <div class="container centered">
+    <div class="page-container">
         <div id="graph-container"></div>
     </div>
-    <script src="libs/d3.v5.min.js"></script>
-    <script src="scripts/d3script.js"></script>
+
+    <script src="libs/d3.v6.min.js"></script>
+    <script src="scripts/d3chart.js"></script>
 
     <script>
         let chart;
-        d3.json('data.json')
+        d3.json('data/data.json')
             .then(data => {
                 chart = new Chart()
                     .svgHeight(window.innerHeight - 30)
@@ -36,9 +30,7 @@
                     .data(data)
                     .render()
             })
-
     </script>
-
 
 </body>
 
