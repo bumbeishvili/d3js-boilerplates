@@ -8,6 +8,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/index.css" />
+    <script src="https://unpkg.com/lil-gui@0.16.0/dist/lil-gui.umd.js"></script>
 </head>
 
 <body translate="no">
@@ -27,6 +28,7 @@
                     .svgHeight(window.innerHeight - 30)
                     .svgWidth(window.innerWidth - 30)
                     .container('#graph-container')
+                    .guiEnabled(true)
                     .data(data)
                     .render()
             })
